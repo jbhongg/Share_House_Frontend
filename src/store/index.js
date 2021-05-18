@@ -20,8 +20,8 @@ export default new Vuex.Store({
       axios
         .post("http://localhost:8079/member/join", member)
         .then((response) => {
-          console.log(response.data.response.body.items.item);
-          commit("JOIN_MEMBER", response.data.response.body.items.item);
+          console.log(response);
+          commit("JOIN_MEMBER", response);
         })
         .catch((error) => {
           console.dir(error);

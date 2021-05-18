@@ -1,8 +1,35 @@
 <template>
   <div id="app">
-    <h1>Helllo</h1>
+    <Nav />
+    <Header />
+    <router-view />
+    <hr>
+    <Footer />
   </div>
 </template>
+
+<script>
+//1. 사용할 컴포넌트 불러오기
+import Nav from '@/layout/Nav.vue';
+import Header from '@/layout/Header.vue';
+import Footer from '@/layout/Footer.vue';
+
+export default {
+  name: 'App',
+  components: {
+    // ES6 : property shorthand
+    // Header: Header == Header
+    //2. 컴포넌트 등록하기.
+    Nav,
+    Header,
+    Footer,
+  },
+  data() {
+    return {};
+  },
+  methods: {},
+};
+</script>
 
 <style>
 #app {

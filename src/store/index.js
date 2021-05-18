@@ -13,6 +13,14 @@ export default new Vuex.Store({
     JOIN_MEMBER(state, member) {
       state.member = member;
     },
+    LOGIN_MEMBER(state, member) {
+      state.member = member;
+      console.log(state.member);
+    },
+    LOGOUT_MEMBER(state) {
+      state.member= "1";
+      console.log(state.member);
+    }
   },
   actions: {
     joinMember({ commit }, member) {
@@ -27,5 +35,19 @@ export default new Vuex.Store({
           console.dir(error);
         });
     },
+    loginMember({ commit }, member) {
+      axios
+        .post("http://localhost:8079/member/login", member)
+        .then((response) => {
+          console.log(response);
+          commit("LOGIN_MEMBER", response);
+        })
+        .catch((error) => {
+          console.dir(error);
+        });
+    },
+    logoutMember({ commit }) {
+      commit("LOGOUT_MEMBER");
+    }
   },
 });

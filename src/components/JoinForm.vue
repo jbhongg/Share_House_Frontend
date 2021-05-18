@@ -211,7 +211,7 @@ export default {
     },
     regitstEmp() {
       this.joinMember(this.member);
-	  this.$router.push({name: 'Main'});
+	  this.$router.push({name: 'Login'});
     },
     searchaddr() {},
   },

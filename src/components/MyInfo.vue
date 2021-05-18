@@ -5,20 +5,20 @@
 	  <table class="table table-active">
 	    <tbody>
 	      <tr class="table-info">
-	        <td>아이디 : </td>
+	        <td>아이디 : {{member.data.id}}</td>
 	      </tr>
 	      <tr class="table-info">
-	        <td>이름 : </td>
-	        <td align="right">이메일 :</td>
+	        <td>이름 : {{member.data.name}}</td>
+	        <td align="right">이메일 : {{member.data.email}}</td>
 	      </tr>
 	      <tr class="table-info">
-	        <td colspan="2">주소: </td>
+	        <td colspan="2">주소: {{member.data.address}}</td>
 	      </tr>
 	      <tr>
 	        <td colspan="2">
 	        <div class="form-group" align="center">
 	        	<button type="button" class="btn btn-warning" @click="movemodify();">수정</button>
-				<button type="button" class="btn btn-primary" @click="movedelete();">삭제</button>
+				<button type="button" class="	btn btn-primary" @click="movedelete();">삭제</button>
 				</div>
 			</td>
 	      </tr>
@@ -29,8 +29,14 @@
 </template>
 
 <script>
+
+import { mapState } from 'vuex';
+
 export default {
-    name: "MyInfo"
+    name: "MyInfo",
+	computed: {
+    	...mapState(['member']),
+  	},
 }
 </script>
 

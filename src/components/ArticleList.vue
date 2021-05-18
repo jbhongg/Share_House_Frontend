@@ -11,13 +11,11 @@
 		<input type="hidden" name="sfile">
 	</form>
 	<div class="container" align="center">
-	<c:if test="${userinfo != null}">
-	</c:if>
 	  <div class="col-lg-8" align="center">
 	  <h2>공지사항</h2>
 	  <table class="table table-borderless">
 	  	<tr>
-	  		<td align="right"><button type="button" id="mvWriteBtn" class="btn btn-link">글쓰기</button></td>
+	  		<td align="right"><button type="button" id="mvWriteBtn" class="btn btn-link" v-if="login !== '1'" @click="$router.push({name: 'ArticleWrite'})">글쓰기</button></td>
 	  	</tr>
 	  </table>
 	  <form id="searchform" method="get" class="form-inline" action="">
@@ -36,8 +34,8 @@
 	  	</tr>
 	  </table>
 	  </form>
-	  <c:if test="${articles.size() != 0}">
-	  	<c:forEach var="article" items="${articles}">
+	  <div v-if="articles.length != 0">
+		  <div v-for="(art,i) in articles" :key="i">
 	  <table class="table table-active">
 	    <tbody>
 	      <tr class="table-info">
@@ -54,24 +52,24 @@
 	      <tr>
 	        <td colspan="2">
 			<ul>
-				<c:forEach var="file" items="${article.fileInfos}">
+				<div v-for="(file, i) in article.data.fileInfos" :key="i">
 				<li>${file.originFile} <a href="#" class="filedown" sfolder="${file.saveFolder}" sfile="${file.saveFile}" ofile="${file.originFile}">[다운로드]</a></li>
-				</c:forEach>
+				</div>
 			</ul>
 			</td>
 	      </tr>
 	      </c:if>
-	      <c:if test="${userinfo.id == article.userid}">
+	      <div v-if="member.data.id === article.data.id">
 	      <tr>
 	        <td colspan="2">
 			<a href="#">수정</a>
 			<a href="#">삭제</a>
 			</td>
 	      </tr>
-	      </c:if>
+	      </div>
 	    </tbody>
 	  </table>
-	  	</c:forEach>
+	  </div>
 	  	<table>
 	  	<tr>
 	  	<td>
@@ -79,8 +77,8 @@
 	  	</td>
 	  	</tr>
 	  	</table>
-	  </c:if>
-	  <c:if test="${articles.size() == 0}">
+		  </div>
+		  <div v-if="articles.length == 0">
 	  <table class="table table-active">
 	    <tbody>
 	      <tr class="table-info" align="center">
@@ -88,15 +86,24 @@
 	      </tr>
 	    </tbody>
 	  </table>
-	  </c:if>
+	  </div>
 	  </div>
 	</div>
     </div>
 </template>
 
 <script>
+
+import { mapState } from 'vuex';
+import { mapActions } from "vuex";
+
 export default {
-    name: "ArticleList"
+    name: "ArticleList",
+	computed: {
+    	...mapState(['login']),
+		...mapState(['member']),
+		...mapState(['articles']),
+  	},
 }
 </script>
 

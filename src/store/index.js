@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     login: "1",
     member: Object,
+    article: Object,
   },
   getters: {},
   mutations: {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
     LOGOUT_MEMBER(state) {
       state.login= "1";
       console.log(state.login);
+    },
+    WRITE_ARTICLE(state, article) {
+      state.article= article;
     }
   },
   actions: {
@@ -50,6 +54,17 @@ export default new Vuex.Store({
     },
     logoutMember({ commit }) {
       commit("LOGOUT_MEMBER");
+    },
+    writeArticle({ commit }, article) {
+      axios
+      .post("http://localhost:8079/board", article)
+      .then((response) => {
+        console.log(response);
+        commit("WRITE_ARTICLE", response);
+      })
+      .catch((error) => {
+        console.dir(error);
+      });
     }
   },
 });

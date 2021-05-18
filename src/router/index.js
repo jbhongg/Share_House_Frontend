@@ -7,6 +7,7 @@ import MyPage from '@/views/MyPage.vue';
 import Interest from '@/views/Interest.vue';
 import Article from '@/views/Article.vue';
 import Admin from '@/views/Admin.vue';
+import ArticleWrite from '@/views/ArticleWrite.vue';
 
 Vue.use(VueRouter);
 
@@ -45,6 +46,11 @@ const routes = [
     path: '/article/',
     name: 'Article',
     component: Article,
+  },
+  {
+    path: '/article/write',
+    name: 'ArticleWrite',
+    component: ArticleWrite,
   },
   {
     path: '/admin/',

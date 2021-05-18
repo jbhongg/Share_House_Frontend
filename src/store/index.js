@@ -77,13 +77,13 @@ export default new Vuex.Store({
         });
     },
     getArticleList({ commit }, params) {
-      console.log("call getBoards");
+      console.log(params);
       commit("SET_KEY", params.key);
       commit("SET_WORD", params.word);
       axios
-        .get("/board", { params })
+        .get("http://localhost:8079/board", { params })
         .then((response) => {
-          console.log(response);
+          console.log(response.data.list);
           commit("SET_BOARDS", response.data.list);
           commit("SET_BOARDPAGENAV", response.data.navigation);
         })

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-container v-if="boards.length" class="container">
+    <b-container v-if="boards.length != 0" class="container">
       <b-table id="board_table" :items="boards" :fields="fields" />
       <b-pagination
         v-model="boardPageNav.currentPage"

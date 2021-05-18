@@ -8,6 +8,7 @@ import Interest from '@/views/Interest.vue';
 import Article from '@/views/Article.vue';
 import Admin from '@/views/Admin.vue';
 import ArticleWrite from '@/views/ArticleWrite.vue';
+import ArticleUpdate from '@/views/ArticleUpdate.vue';
 
 Vue.use(VueRouter);
 
@@ -46,6 +47,11 @@ const routes = [
     path: '/article/',
     name: 'Article',
     component: Article,
+  },
+  {
+    path: '/article/update:no',
+    name: 'ArticleUpdate',
+    component: ArticleUpdate,
   },
   {
     path: '/article/write',

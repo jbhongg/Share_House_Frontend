@@ -51,6 +51,12 @@ export default new Vuex.Store({
     SET_BOARDPAGENAV(state, payload) {
       state.boardPageNav = payload;
     },
+    DELETE_ARTICLE(state) {
+      state.boards;
+    },
+    UPDATE_ARTICLE(state, article) {
+      state.article= article;
+    }
   },
   actions: {
     joinMember({ commit }, member) {
@@ -104,6 +110,28 @@ export default new Vuex.Store({
       .catch((error) => {
         console.dir(error);
       });
+    },
+    deleteArticle({ commit }, articleno) {
+      axios
+        .delete("http://localhost:8079/board/" + articleno.item.articleno )
+      .then((response) => {
+        console.log(response);
+        commit("DELETE_ARTICLE", response);
+      })
+      .catch((error) => {
+        console.dir(error);
+      });
+    },
+    updateArticle({ commit }, article) {
+      axios
+      .put("http://localhost:8079/board/" + article.articleno, article)
+    .then((response) => {
+      console.log(response);
+      commit("UPDATE_ARTICLE", response);
+    })
+    .catch((error) => {
+      console.dir(error);
+    });
     }
   },
 });

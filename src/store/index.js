@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import axios from 'axios';
+import axios from "axios";
 
 Vue.use(Vuex);
 
@@ -16,11 +16,12 @@ export default new Vuex.Store({
   },
   actions: {
     joinMember({ commit }, member) {
+      console.log(member);
       axios
         .post("http://localhost:8079/member/join", member)
         .then((response) => {
           console.log(response.data.response.body.items.item);
-          commit('JOIN_MEMBER', response.data.response.body.items.item);
+          commit("JOIN_MEMBER", response.data.response.body.items.item);
         })
         .catch((error) => {
           console.dir(error);

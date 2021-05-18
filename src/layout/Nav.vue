@@ -18,19 +18,19 @@
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<ul class="navbar-nav ml-auto">
                     <!-- userinfo === null -->
-					<li class="nav-item" id="login" v-if="member === '1'" > <router-link class="nav-link"
+					<li class="nav-item" id="login" v-if="login === '1'" > <router-link class="nav-link"
 							id="login" to="/login">로그인</router-link></li>
-					<li class="nav-item" id="signup" v-if="member === '1'"><router-link class="nav-link" to="/join">회원가입</router-link></li>
+					<li class="nav-item" id="signup" v-if="login === '1'"><router-link class="nav-link" to="/join">회원가입</router-link></li>
                             
                     <!-- userinfo != null -->
-                    <li v-if="member !== '1'"><a class="nav-link" href="#" @click="logout()">로그아웃</a></li>
-					<li class="nav-item" v-if="member !== '1'"><router-link class="nav-link" to="/interest">관심지역</router-link></li>
-					<li class="nav-item" id="mypage" v-if="member !== '1'"><router-link class="nav-link" to="/mypage">마이 페이지</router-link></li>
+                    <li v-if="login === '2'"><a class="nav-link" href="#" @click="logout()">로그아웃</a></li>
+					<li class="nav-item" v-if="login === '2'"><router-link class="nav-link" to="/interest">관심지역</router-link></li>
+					<li class="nav-item" id="mypage" v-if="login === '2'"><router-link class="nav-link" to="/mypage">마이 페이지</router-link></li>
                     
                     <!-- userinfo.id=='admin' -->
-					<li class="nav-item" id="admin" v-if="member.id === 'admin'"><router-link class="nav-link" to="/">회원 관리</router-link></li>
+					<li class="nav-item" id="admin" v-if="login === '3'"><router-link class="nav-link" to="/">회원 관리</router-link></li>
                     
-					<li class="nav-item" id="article"><router-link class="nav-link" to="/article">공지사항</router-link></li>
+					<li class="nav-item" id="article"><router-link class="nav-link" to="/article">게시판</router-link></li>
 					<li class="nav-item" id="home"><router-link class="nav-link" to="/">Home</router-link></li>
 				</ul>
 			</div>
@@ -47,7 +47,7 @@ import { mapState } from 'vuex';
 export default {
     name: 'Nav',
 	computed: {
-    	...mapState(['member']),
+    	...mapState(['login']),
   	},
 	  methods: {
 		  ...mapActions(["logoutMember"]),

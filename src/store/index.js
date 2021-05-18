@@ -6,6 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    login: "1",
     member: Object,
   },
   getters: {},
@@ -15,11 +16,12 @@ export default new Vuex.Store({
     },
     LOGIN_MEMBER(state, member) {
       state.member = member;
+      state.login= "2";
       console.log(state.member);
     },
     LOGOUT_MEMBER(state) {
-      state.member= "1";
-      console.log(state.member);
+      state.login= "1";
+      console.log(state.login);
     }
   },
   actions: {

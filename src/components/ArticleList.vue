@@ -37,10 +37,13 @@ export default {
     ...mapState(["boards", "boardPageNav", "key", "word"]),
   },
   created() {
-    this.getArticleList(this.$store.getters.requestParams);
+    this.getdata();
   },
   methods: {
-    ...mapActions("getArticleList"),
+    ...mapActions(["getArticleList"]),
+	getdata(){
+		this.getArticleList(this.$store.getters.requestParams);
+	},
     pageMove: function (button, page) {
       const params = { key: this.key, word: this.word, pg: page };
       this.getArticleList(params);

@@ -3,19 +3,19 @@
     <Nav />
     <Header />
     <router-view />
-    <hr>
+    <hr />
     <Footer />
   </div>
 </template>
 
 <script>
 //1. 사용할 컴포넌트 불러오기
-import Nav from '@/layout/Nav.vue';
-import Header from '@/layout/Header.vue';
-import Footer from '@/layout/Footer.vue';
+import Nav from "@/layout/Nav.vue";
+import Header from "@/layout/Header.vue";
+import Footer from "@/layout/Footer.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     // ES6 : property shorthand
     // Header: Header == Header
@@ -52,4 +52,8 @@ export default {
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
+@import "./assets/css/clean-blog.css";
+@import "./assets/css/clean-blog.min.css";
+@import "./assets/css/styles.css";
 </style>

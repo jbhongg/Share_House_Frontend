@@ -9,18 +9,21 @@
 			<form class="form-inline" id="frm" method="get" action="">
 				<input type="hidden" id="act" name="act" value="searchAreas" />
 				<div class="form-group md">
-					<select class="form-control mr-2" name="sido" id="sido">
-						<option value="0">도/광역시</option>
+					<select class="form-control mr-2" name="sido" id="sido" v-model="si">
+						<option value="">도/광역시</option>
+						<option v-for="(item, i) in sido.data" :key="i" :value="item.sidoCode">{{item.sidoName}}</option>
 					</select>
 				</div>
 				<div class="form-group mr-2 md-1">
-					<select class="form-control" name="gugun" id="gugun">
-						<option value="0">시/구/군</option>
+					<select class="form-control" name="gugun" id="gugun" v-model="gu">
+						<option value="">시/구/군</option>
+						<option v-for="(item, i) in gugun.data" :key="i" :value="item.gugunCode">{{item.gugunName}}</option>
 					</select>
 				</div>
 				<div class="form-group md-1">
-					<select class="form-control" name="dong" id="dong">
-						<option value="0">동</option>
+					<select class="form-control" name="dong" id="dong" v-model="dong_code">
+						<option value="">동</option>
+						<option v-for="(item, i) in dong.data" :key="i" :value="item.dongCode">{{item.dongName}}</option>
 					</select>
 				</div>
 
@@ -84,10 +87,14 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 export default {
     name: "Main",
 	data() {
 		return {
+			si: "",
+			gu: "",
+			dong_code: "",
 			pos: [
 				{
 					name : '제주특별자치도 제주시 첨단로 241'
@@ -104,10 +111,31 @@ export default {
 			]
 		}
 	},
+	computed:{
+		...mapState(["sido", "gugun", "dong"]),
+	},
 	mounted() {
 		window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
 	},
+	created() {
+		this.getdata();
+	},
+	watch:{
+		si: function(newval){
+			this.getgugundata(newval);
+		},
+		gu: function(newval){
+			this.getdongdate(newval);
+		},
+		dong_code: function(newval){
+			this.getapt(newval);
+		}
+	},
 	methods: {
+		...mapActions(["getSidoList"]),
+		...mapActions(["getGugunList"]),
+		...mapActions(["getDongList"]),
+		...mapActions(["getAptList"]),
 		addScript() {
       		const script = document.createElement('script');
       		/* global kakao */
@@ -157,6 +185,19 @@ export default {
 				}); 
 			}
     	},
+		getdata(){
+			this.getSidoList();
+		},
+		getgugundata(code){
+			this.getGugunList(code);
+		},
+		getdongdate(code){
+			this.getDongList(code);
+		},
+		getapt(code){
+			this.getAptList(code);
+			this.$router.push({name: 'Apt'});
+		}
 	}
 }
 </script>

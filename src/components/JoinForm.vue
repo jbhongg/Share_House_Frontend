@@ -83,8 +83,8 @@
           <label for="">성별 선택</label>
           <select type="text" id="gender" name="gender" class="form-control" v-model="member.gender" ref="gender">
             <option value="">성별 선택</option>
-            <option value="남">남</option>
-            <option value="여">여</option>
+            <option value="M">남</option>
+            <option value="F">여</option>
           </select>
         </div>
         <div class="form-group" align="left">
@@ -198,7 +198,7 @@ export default {
         email: "",
         phone: "",
         address: "",
-        area: "",
+        area: "1114016200",
         birth: "",
         gender: "",
       },
@@ -239,7 +239,7 @@ export default {
         ((msg = "생년월일 입력해주세요"), (err = false), this.$refs.yy.focus());
       err &&
         !this.member.gender &&
-        ((msg = "이메일 입력해주세요"), (err = false), this.$refs.gender.focus());  
+        ((msg = "성별 입력해주세요"), (err = false), this.$refs.gender.focus());  
       err &&
         !this.emailid &&
         ((msg = "이메일 입력해주세요"), (err = false), this.$refs.emailid.focus());
@@ -252,17 +252,19 @@ export default {
       err &&
         !this.address_detail &&
         ((msg = "상세주소 입력해주세요"), (err = false), this.$refs.address_detail.focus());
+      if(this.dd.length == 1){
+        this.dd = 0 + this.dd;
+      }
       this.member.phone = this.tel1 + "-" + this.tel2 + "-" + this.tel3;
       this.member.email = this.emailid + "@" + this.emaildomain;
       this.member.address = this.addr + " " + this.address_detail;
       this.member.birth = this.yy + this.mm + this.dd
-      console.log(this.addr);
       if (!err) alert(msg);
       else this.regitstEmp();
     },
     regitstEmp() {
       this.joinMember(this.member);
-	  this.$router.push({name: 'Login'});
+	    this.$router.push({name: 'Login'});
     },
     searchaddr() {
       new window.daum.Postcode({ 

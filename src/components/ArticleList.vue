@@ -8,11 +8,11 @@
 	  </table>
       <b-table id="board_table" :items="boards" :fields="fields" >
 	   <template #cell(update)="articleno">
-        <b-button size="sm" @click="$router.push({name: 'ArticleUpdate', params: {no: articleno.item.articleno}})" class="mr-2">수정
+        <b-button v-if="articleno.item.userid === member.data.id" size="sm" @click="$router.push({name: 'ArticleUpdate', params: {no: articleno.item.articleno}})" class="mr-2">수정
         </b-button>
       </template>
 	  	<template #cell(delete)="articleno">
-        <b-button size="sm" @click="deleteBoard(articleno)" class="mr-2">삭제
+        <b-button v-if="articleno.item.userid === member.data.id" size="sm" @click="deleteBoard(articleno)" class="mr-2">삭제
         </b-button>
       </template>
 	  </b-table>

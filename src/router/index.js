@@ -9,7 +9,9 @@ import Article from '@/views/Article.vue';
 import Admin from '@/views/Admin.vue';
 import ArticleWrite from '@/views/ArticleWrite.vue';
 import ArticleUpdate from '@/views/ArticleUpdate.vue';
-import Chat from '@/views/Chat.vue';
+import MyInfoUpdate from '@/views/MyInfoUpdate.vue';
+import Apt from '@/views/Apt.vue';
+import InterestApt from '@/views/InterestApt.vue';
 
 Vue.use(VueRouter);
 
@@ -45,6 +47,11 @@ const routes = [
     component: Interest,
   },
   {
+    path: '/interestapt/',
+    name: 'InterestApt',
+    component: InterestApt,
+  },
+  {
     path: '/article/',
     name: 'Article',
     component: Article,
@@ -65,9 +72,14 @@ const routes = [
     component: Admin,
   },
   {
-    path: '/chat/',
-    name: 'Chat',
-    component: Chat,
+    path: '/mypage/update:id',
+    name: 'MyInfoUpdate',
+    component: MyInfoUpdate,
+  },
+  {
+    path: '/apt',
+    name: 'Apt',
+    component: Apt,
   },
 ];
 

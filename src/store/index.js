@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import axios from "axios";
 import createPersistedState from "vuex-persistedstate"
 
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -14,6 +15,12 @@ export default new Vuex.Store({
     boardPageNav: {},
     word: "",
     key: "",
+    sido: [],
+    gugun: [],
+    dong: [],
+    apts: [],
+    apt: Object,
+    wishs: [],
   },
   getters: {
     requestParams(state) {
@@ -29,13 +36,17 @@ export default new Vuex.Store({
       state.member = member;
     },
     LOGIN_MEMBER(state, member) {
-      state.member = member;
-      state.login = "2";
-      console.log(state.member);
+      console.log(member)
+      if (member.data.length !== 0) {
+        state.login = "2";
+        state.member = member;
+      }
+      else {
+        alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+      }
     },
     LOGOUT_MEMBER(state) {
       state.login = "1";
-      console.log(state.login);
     },
     WRITE_ARTICLE(state, article) {
       state.article= article;
@@ -57,6 +68,39 @@ export default new Vuex.Store({
     },
     UPDATE_ARTICLE(state, article) {
       state.article= article;
+    },
+    DELETE_USER(state) {
+      state.login = "1";
+    },
+    UPDATE_MEMBER(state, member) {
+      state.member = member;
+    },
+    SET_SIDO(state, sido) {
+      state.sido = sido;
+      console.log(state.sido);
+    },
+    SET_GUGUN(state, gugun) {
+      state.gugun = gugun;
+      console.log(state.gugun);
+    },
+    SET_DONG(state, dong) {
+      state.dong = dong;
+      console.log(state.dong);
+    },
+    SET_APTS(state, apts) {
+      state.apts = apts;
+      console.log(state.apts);
+    },
+    SET_WISH(state) {
+      console.log(state.wishs);
+    },
+    SET_WISHS(state, wishs) {
+      console.log("w : " + wishs);
+      state.wishs = wishs;
+      console.log(state.wishs);
+    },
+    DELETE_WISH(state) {
+      console.log(state.wishs);
     }
   },
   actions: {
@@ -67,6 +111,18 @@ export default new Vuex.Store({
         .then((response) => {
           console.log(response);
           commit("JOIN_MEMBER", response);
+        })
+        .catch((error) => {
+          console.dir(error);
+        });
+    },
+    registInterest({ commit }, param) {
+      console.log(param);
+      axios
+        .post("http://localhost:8092/wish/" + param)
+        .then((response) => {
+          console.log(response);
+          commit("SET_WISH", response);
         })
         .catch((error) => {
           console.dir(error);
@@ -93,6 +149,74 @@ export default new Vuex.Store({
           console.log(response.data.list);
           commit("SET_BOARDS", response.data.list);
           commit("SET_BOARDPAGENAV", response.data.navigation);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getWishList({ commit }, userid) {
+      console.log(userid + 111);
+      axios
+        .get("http://localhost:8092/wish/" + userid)
+        .then((response) => {
+          console.log(response);
+          commit("SET_WISHS", response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    deleteWishList({ commit }, param) {
+      console.log(param);
+      axios
+        .delete("http://localhost:8092/wish/" + param)
+      .then((response) => {
+        console.log(response);
+        commit("DELETE_WISH", response);
+      })
+      .catch((error) => {
+        console.dir(error);
+      });
+    },
+    getSidoList({ commit }) {
+      axios
+        .get("http://localhost:8092/house/area")
+        .then((response) => {
+          console.log(response);
+          commit("SET_SIDO", response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getGugunList({ commit }, code) {
+      axios
+        .get("http://localhost:8092/house/sido/" + code)
+        .then((response) => {
+          console.log(response);
+          commit("SET_GUGUN", response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getDongList({ commit }, code) {
+      axios
+        .get("http://localhost:8092/house/gugun/" + code)
+        .then((response) => {
+          console.log(response);
+          commit("SET_DONG", response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getAptList({ commit }, code) {
+      axios
+        .get("http://localhost:8092/house/dong/" + code)
+        .then((response) => {
+          console.log(response.data.list);
+          commit("SET_APTS", response.data.list);
         })
         .catch((error) => {
           console.log(error);
@@ -133,7 +257,30 @@ export default new Vuex.Store({
     .catch((error) => {
       console.dir(error);
     });
-    }
+    },
+    deleteUser({ commit }, userid) {
+      axios
+        .delete("http://localhost:8092/user/" + userid )
+      .then((response) => {
+        console.log(response);
+        commit("DELETE_USER", response);
+      })
+      .catch((error) => {
+        console.dir(error);
+      });
+    },
+    updateMember({ commit }, member) {
+      console.log(member.data);
+      axios
+      .put("http://localhost:8092/user/" + member.id, member)
+    .then((response) => {
+      console.log(22);
+      commit("UPDATE_MEMBER", response);
+    })
+    .catch((error) => {
+      console.dir(error);
+    });
+    },
   },
   plugins: [createPersistedState()],
 });

@@ -23,8 +23,9 @@
 					<li class="nav-item" id="signup" v-if="login === '1'"><router-link class="nav-link" to="/join">회원가입</router-link></li>
                             
                     <!-- userinfo != null -->
-                    <li v-if="login === '2'"><a class="nav-link" href="#" @click="logout()">로그아웃</a></li>
+                    <li class="nav-item" v-if="login === '2'"><a class="nav-link" href="#" @click="logout()">로그아웃</a></li>
 					<li class="nav-item" v-if="login === '2'"><router-link class="nav-link" to="/interest">관심지역</router-link></li>
+					<li class="nav-item" v-if="login === '2'"><router-link class="nav-link" to="/interestapt">관심매물</router-link></li>
 					<li class="nav-item" id="mypage" v-if="login === '2'"><router-link class="nav-link" to="/mypage">마이 페이지</router-link></li>
 					<li class="nav-item" id="mypage" v-if="login === '2'"><router-link class="nav-link" to="/chat">채팅방</router-link></li>
                     

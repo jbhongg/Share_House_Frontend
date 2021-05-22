@@ -47,6 +47,47 @@
           />
         </div>
         <div class="form-group" align="left">
+          <label for="">생년월일</label>
+          <div id="bir_yy">
+              <span class="box">
+                  <input type="text" id="yy" class="form-control" name="yy" maxlength="4" v-model="yy" ref="yy" placeholder="년(4자)">
+              </span>
+          </div>
+          <div id="bir_mm">
+              <span class="box">
+                  <select id="mm" class="form-control" name="mm" v-model="mm" ref="mm">
+                      <option value="">월</option>
+                      <option value="01">1</option>
+                      <option value="02">2</option>
+                      <option value="03">3</option>
+                      <option value="04">4</option>
+                      <option value="05">5</option>
+                      <option value="06">6</option>
+                      <option value="07">7</option>
+                      <option value="08">8</option>
+                      <option value="09">9</option>                                    
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                  </select>
+              </span>
+        </div>
+        <!-- BIRTH_DD -->
+        <div id="bir_dd">
+            <span class="box">
+                <input type="text" id="dd" class="form-control" name="dd" v-model="dd" ref="dd" maxlength="2" placeholder="일">
+            </span>
+        </div>
+        </div>
+        <div class="form-group" align="left">
+          <label for="">성별 선택</label>
+          <select type="text" id="gender" name="gender" class="form-control" v-model="member.gender" ref="gender">
+            <option value="">성별 선택</option>
+            <option value="남">남</option>
+            <option value="여">여</option>
+          </select>
+        </div>
+        <div class="form-group" align="left">
           <label for="email">이메일</label><br />
           <div id="emailid" class="custom-control-inline">
             <input
@@ -153,23 +194,25 @@ export default {
       member: {
         name: "",
         id: "",
-        joindate: "",
         password: "",
         email: "",
         phone: "",
         address: "",
+        area: "",
+        birth: "",
+        gender: "",
       },
       pwdcheck: "",
-      // email: "",
       emailid: "",
       emaildomain: "",
-      // tel: "",
       tel1: "",
       tel2: "",
       tel3: "",
-      // address: "",
       addr: "",
       address_detail: "",
+      yy: "",
+      mm: "",
+      dd: "",
     };
   },
   methods: {
@@ -192,6 +235,12 @@ export default {
         this.pwdcheck !== this.member.password &&
         ((msg = "비빌번호가 일치하지 않습니다"), (err = false), this.$refs.pwdcheck.focus());
       err &&
+        (!this.yy || !this.mm || !this.dd) &&
+        ((msg = "생년월일 입력해주세요"), (err = false), this.$refs.yy.focus());
+      err &&
+        !this.member.gender &&
+        ((msg = "이메일 입력해주세요"), (err = false), this.$refs.gender.focus());  
+      err &&
         !this.emailid &&
         ((msg = "이메일 입력해주세요"), (err = false), this.$refs.emailid.focus());
       err &&
@@ -206,6 +255,7 @@ export default {
       this.member.phone = this.tel1 + "-" + this.tel2 + "-" + this.tel3;
       this.member.email = this.emailid + "@" + this.emaildomain;
       this.member.address = this.addr + " " + this.address_detail;
+      this.member.birth = this.yy + this.mm + this.dd
       console.log(this.addr);
       if (!err) alert(msg);
       else this.regitstEmp();

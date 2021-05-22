@@ -63,7 +63,7 @@ export default new Vuex.Store({
     joinMember({ commit }, member) {
       console.log(member);
       axios
-        .post("http://localhost:80/member/join", member)
+        .post("http://localhost:8092/user/join", member)
         .then((response) => {
           console.log(response);
           commit("JOIN_MEMBER", response);
@@ -74,7 +74,7 @@ export default new Vuex.Store({
     },
     loginMember({ commit }, member) {
       axios
-        .post("http://localhost:80/member/login", member)
+        .post("http://localhost:8092/user/login", member)
         .then((response) => {
           console.log(response);
           commit("LOGIN_MEMBER", response);
@@ -88,7 +88,7 @@ export default new Vuex.Store({
       commit("SET_KEY", params.key);
       commit("SET_WORD", params.word);
       axios
-        .get("http://localhost:80/board", { params })
+        .get("http://localhost:8092/board", { params })
         .then((response) => {
           console.log(response.data.list);
           commit("SET_BOARDS", response.data.list);
@@ -103,7 +103,7 @@ export default new Vuex.Store({
     },
     writeArticle({ commit }, article) {
       axios
-      .post("http://localhost:80/board", article)
+      .post("http://localhost:8092/board", article)
       .then((response) => {
         console.log(response);
         commit("WRITE_ARTICLE", response);
@@ -114,7 +114,7 @@ export default new Vuex.Store({
     },
     deleteArticle({ commit }, articleno) {
       axios
-        .delete("http://localhost:80/board/" + articleno.item.articleno )
+        .delete("http://localhost:8092/board/" + articleno.item.articleno )
       .then((response) => {
         console.log(response);
         commit("DELETE_ARTICLE", response);
@@ -125,7 +125,7 @@ export default new Vuex.Store({
     },
     updateArticle({ commit }, article) {
       axios
-      .put("http://localhost:80/board/" + article.articleno, article)
+      .put("http://localhost:8092/board/" + article.articleno, article)
     .then((response) => {
       console.log(response);
       commit("UPDATE_ARTICLE", response);

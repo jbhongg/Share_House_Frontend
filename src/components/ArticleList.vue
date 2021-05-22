@@ -42,6 +42,21 @@
       />
     </b-container>
     <b-container v-else class="container">
+      <table class="table table-borderless">
+        <tr>
+          <td align="right">
+            <button
+              type="button"
+              id="mvWriteBtn"
+              class="btn btn-link"
+              v-if="login !== '1'"
+              @click="$router.push({ name: 'ArticleWrite' })"
+            >
+              글쓰기
+            </button>
+          </td>
+        </tr>
+      </table>
       <h3>글 많이 써주세요</h3>
     </b-container>
   </div>
@@ -68,6 +83,7 @@ export default {
     ...mapState(["boards", "boardPageNav", "key", "word", "login", "member"]),
   },
   created() {
+    console.log(this.boards);
     this.getdata();
   },
   watch: {

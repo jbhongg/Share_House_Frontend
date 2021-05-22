@@ -9,6 +9,7 @@ import Article from '@/views/Article.vue';
 import Admin from '@/views/Admin.vue';
 import ArticleWrite from '@/views/ArticleWrite.vue';
 import ArticleUpdate from '@/views/ArticleUpdate.vue';
+import Chat from '@/views/Chat.vue';
 
 Vue.use(VueRouter);
 
@@ -62,6 +63,11 @@ const routes = [
     path: '/admin/',
     name: 'Admin',
     component: Admin,
+  },
+  {
+    path: '/chat/',
+    name: 'Chat',
+    component: Chat,
   },
 ];
 

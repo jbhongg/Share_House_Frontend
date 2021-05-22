@@ -26,6 +26,7 @@
                     <li v-if="login === '2'"><a class="nav-link" href="#" @click="logout()">로그아웃</a></li>
 					<li class="nav-item" v-if="login === '2'"><router-link class="nav-link" to="/interest">관심지역</router-link></li>
 					<li class="nav-item" id="mypage" v-if="login === '2'"><router-link class="nav-link" to="/mypage">마이 페이지</router-link></li>
+					<li class="nav-item" id="mypage" v-if="login === '2'"><router-link class="nav-link" to="/chat">채팅방</router-link></li>
                     
                     <!-- userinfo.id=='admin' -->
 					<li class="nav-item" id="admin" v-if="login === '3'"><router-link class="nav-link" to="/">회원 관리</router-link></li>
@@ -53,7 +54,7 @@ export default {
 		  ...mapActions(["logoutMember"]),
 		  logout(){
 			this.logoutMember();
-			this.$router.push({name: 'Main'});
+			//this.$router.push({name: 'Main'});
 		  }
 	  },
 }

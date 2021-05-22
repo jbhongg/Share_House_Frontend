@@ -58,6 +58,7 @@ export default {
             console.log(this.article);
             this.writeArticle(this.article);
             this.$router.push({name: 'Article'});
+            this.$router.go();
         }
     },
 }

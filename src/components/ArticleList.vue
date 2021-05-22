@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-container v-if="boards.length != 0" class="container">
+    <b-container v-if="typeof(boards) !='undefined'" class="container">
 	<table class="table table-borderless">
 	  	<tr>
 	  		<td align="right"><button type="button" id="mvWriteBtn" class="btn btn-link" v-if="login !== '1'" @click="$router.push({name: 'ArticleWrite'})">글쓰기</button></td>
@@ -17,7 +17,7 @@
       </template>
 	  </b-table>
 	  
-      <b-pagination
+      <b-pagination v-if="typeof(boardPageNav) != 'undefined'" 
         v-model="boardPageNav.currentPage"
         :total-rows="boardPageNav.totalPageCount"
         :per-page="boardPageNav.naviSize"
@@ -27,6 +27,11 @@
       />
     </b-container>
     <b-container v-else class="container">
+      <table class="table table-borderless">
+	  	  <tr>
+	  		  <td align="right"><button type="button" id="mvWriteBtn" class="btn btn-link" v-if="login !== '1'" @click="$router.push({name: 'ArticleWrite'})">글쓰기</button></td>
+	  	  </tr>
+	    </table>
       <h3>글 많이 써주세요</h3>
     </b-container>
   </div>
@@ -53,6 +58,7 @@ export default {
     ...mapState(["boards", "boardPageNav", "key", "word", "login", "member"]),
   },
   created() {
+    console.log(this.boards);
     this.getdata();
   },
     watch: {
@@ -64,7 +70,6 @@ export default {
 	...mapActions(["deleteArticle"]),
 	getdata(){
 		this.getArticleList(this.$store.getters.requestParams);
-		console.log(this.boards);
 	},
     pageMove: function (button, page) {
       const params = { key: this.key, word: this.word, pg: page };
@@ -72,6 +77,7 @@ export default {
     },
 	deleteBoard(articleno){
 		this.deleteArticle(articleno);
+    this.$router.go();
 	}
   },
 };

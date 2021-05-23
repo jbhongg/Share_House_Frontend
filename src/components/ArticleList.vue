@@ -62,7 +62,6 @@ export default {
     this.getdata();
   },
     watch: {
-    // 라우트가 변경되면 메소드를 다시 호출됩니다.
     '$route': 'getdata'
   },
   methods: {

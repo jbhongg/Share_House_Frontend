@@ -12,6 +12,7 @@ import ArticleUpdate from '@/views/ArticleUpdate.vue';
 import MyInfoUpdate from '@/views/MyInfoUpdate.vue';
 import Apt from '@/views/Apt.vue';
 import InterestApt from '@/views/InterestApt.vue';
+import AptInfo from '@/views/AptInfo.vue';
 
 Vue.use(VueRouter);
 
@@ -80,6 +81,11 @@ const routes = [
     path: '/apt',
     name: 'Apt',
     component: Apt,
+  },
+  {
+    path: '/AptInfo',
+    name: 'AptInfo',
+    component: AptInfo,
   },
 ];
 

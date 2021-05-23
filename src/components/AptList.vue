@@ -27,7 +27,7 @@
                     <th>찜하기</th>
                     <tr v-for="(item, i) in apts" :key="i">
                         <td>{{item.no}}</td>
-                        <td>{{item.houseName}}</td>
+                        <td><button @click="detailinfo(item.houseName)">{{item.houseName}}</button></td>
                         <td>{{item.dong}}</td>
                         <td>{{item.residentsNum}}</td>
                         <td>1</td>
@@ -57,6 +57,7 @@ export default {
 	},
     methods: {
         ...mapActions(["registInterest"]),
+        ...mapActions(["getAptDetail"]),
         addScript() {
       		const script = document.createElement('script');
       		/* global kakao */
@@ -65,43 +66,30 @@ export default {
       		document.head.appendChild(script);
 		},
         initMap() {
-      		var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+      		var container = document.getElementById('map'); 
       		var options = {
-        		//지도를 생성할 때 필요한 기본 옵션
-        		center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
-        		level: 3 //지도의 레벨(확대, 축소 정도)
+        		center: new kakao.maps.LatLng(33.450701, 126.570667), 
+        		level: 3 
       		};
 
-      		var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-			/*var marker = new kakao.maps.Marker({ 
-				position: map.getCenter() 
-			}); */
-			//marker.setMap(map);
+      		var map = new kakao.maps.Map(container, options); 
 			var geocoder = new kakao.maps.services.Geocoder();
 
 			for (var i = 0; i < this.apts.length; i++) {
                 let title = this.apts[i].houseName;
-    			// 마커를 생성합니다
 				geocoder.addressSearch(this.apts[i].address, function(result, status) {
 
-    			// 정상적으로 검색이 완료됐으면 
      			if (status === kakao.maps.services.Status.OK) {
 
         			var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-        			// 결과값으로 받은 위치를 마커로 표시합니다
         			var marker = new kakao.maps.Marker({
 						map: map,
             			position: coords
         			});
-
-        			// 인포윈도우로 장소에 대한 설명을 표시합니다
         			var infowindow = new kakao.maps.InfoWindow({
             			content: `<div style="width:150px;text-align:center;padding:6px 0;">${title}</div>`
         			});
         			infowindow.open(map, marker);
-
-        			// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
         			map.setCenter(coords);
     			}
 				}); 
@@ -109,8 +97,11 @@ export default {
     	},
         registinterestapt(no, userid){
             let param = userid + "/" + no
-            console.log(userid);
             this.registInterest(param);
+        },
+        detailinfo(name){
+            this.getAptDetail(name);
+            this.$router.push({name: 'AptInfo'});
         }
     },
 }

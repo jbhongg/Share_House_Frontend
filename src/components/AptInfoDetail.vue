@@ -1,5 +1,8 @@
 <template>
     <div>
+        <div>
+            <img id="logo-img-mobile" src="@/assets/house.jpg"  alt="The house"/>
+        </div>
         <b-container class="container">
         <b-table id="aptdetail_table" :items="apt" :fields="fields" >
 	  </b-table>

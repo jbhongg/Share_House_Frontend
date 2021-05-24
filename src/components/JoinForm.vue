@@ -83,9 +83,24 @@
           <label for="">성별 선택</label>
           <select type="text" id="gender" name="gender" class="form-control" v-model="member.gender" ref="gender">
             <option value="">성별 선택</option>
-            <option value="남">남</option>
-            <option value="여">여</option>
+            <option value="M">남</option>
+            <option value="F">여</option>
           </select>
+        </div>
+        <div class="form-group" align="left">
+          <label for="">관심지역 선택</label>
+          <div class="form-group md">
+					<select class="form-control mr-2" name="sido" id="sido" v-model="si" ref="si">
+						<option value="">도/광역시</option>
+						<option v-for="(item, i) in sido.data" :key="i" :value="item.sidoCode">{{item.sidoName}}</option>
+					</select>
+				</div>
+				<div class="form-group mr-2 md-1">
+					<select class="form-control" name="gugun" id="gugun" v-model="gu" ref="gu">
+						<option value="">시/구/군</option>
+						<option v-for="(item, i) in gugun.data" :key="i" :value="item.gugunCode">{{item.gugunName}}</option>
+					</select>
+				</div>
         </div>
         <div class="form-group" align="left">
           <label for="email">이메일</label><br />
@@ -185,7 +200,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "JoinForm",
@@ -213,10 +228,31 @@ export default {
       yy: "",
       mm: "",
       dd: "",
+      si: "",
+      gu: "",
     };
   },
+  	computed:{
+		...mapState(["sido", "gugun"]),
+	},
+  created() {
+		this.getdata();
+	},
+  watch:{
+		si: function(newval){
+			this.getgugundata(newval);
+		},
+	},
   methods: {
+    ...mapActions(["getSidoList"]),
+		...mapActions(["getGugunList"]),
     ...mapActions(["joinMember"]),
+    getdata() {
+      this.getSidoList();
+    },
+    getgugundata(code){
+			this.getGugunList(code);
+		},
     checkValue() {
       let err = true;
       let msg = "";
@@ -239,7 +275,10 @@ export default {
         ((msg = "생년월일 입력해주세요"), (err = false), this.$refs.yy.focus());
       err &&
         !this.member.gender &&
-        ((msg = "이메일 입력해주세요"), (err = false), this.$refs.gender.focus());  
+        ((msg = "성별 입력해주세요"), (err = false), this.$refs.gender.focus());  
+      err &&
+        (!this.si || !this.gu) &&
+        ((msg = "관심지역 입력해주세요"), (err = false), this.$refs.si.focus());
       err &&
         !this.emailid &&
         ((msg = "이메일 입력해주세요"), (err = false), this.$refs.emailid.focus());
@@ -252,39 +291,35 @@ export default {
       err &&
         !this.address_detail &&
         ((msg = "상세주소 입력해주세요"), (err = false), this.$refs.address_detail.focus());
+      if(this.dd.length == 1){
+        this.dd = 0 + this.dd;
+      }
       this.member.phone = this.tel1 + "-" + this.tel2 + "-" + this.tel3;
       this.member.email = this.emailid + "@" + this.emaildomain;
       this.member.address = this.addr + " " + this.address_detail;
       this.member.birth = this.yy + this.mm + this.dd
-      console.log(this.addr);
+      this.member.area = this.gu;
       if (!err) alert(msg);
       else this.regitstEmp();
     },
     regitstEmp() {
       this.joinMember(this.member);
-	  this.$router.push({name: 'Login'});
+	    this.$router.push({name: 'Login'});
     },
     searchaddr() {
       new window.daum.Postcode({ 
         oncomplete: (data) => { 
-          // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분. 
-          // 도로명 주소의 노출 규칙에 따라 주소를 조합한다. 
-          // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다. 
-          let fullRoadAddr = data.roadAddress; // 도로명 주소 변수 
-          let extraRoadAddr = ''; // 도로명 조합형 주소 변수 
-          // 법정동명이 있을 경우 추가한다. (법정리는 제외) 
-          // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다. 
+          let fullRoadAddr = data.roadAddress; 
+          let extraRoadAddr = ''; 
           if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){ 
             extraRoadAddr += data.bname; 
-          } // 건물명이 있고, 공동주택일 경우 추가한다. 
+          } 
           if(data.buildingName !== '' && data.apartment === 'Y'){ 
             extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName); 
           } 
-          // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다. 
           if(extraRoadAddr !== ''){ 
             extraRoadAddr = ' (' + extraRoadAddr + ')'; 
           } 
-          // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다. 
           if(fullRoadAddr !== ''){ 
             fullRoadAddr += extraRoadAddr; 
           } 

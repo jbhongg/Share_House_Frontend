@@ -1,14 +1,12 @@
 <template>
-<div class="container" align="center">
-	  <div class="col-lg-8" align="center">
-	  <h2>관심 지역 확인</h2>
-	  <br>
-	  <div id="map" class="map"
+		<div class="col-8">
+				<div id="map" class="map"
 					style="width: 100%; height: 600px; margin: auto; position: relative; overflow: hidden;">
 				</div>
-	   <table border="1">
+               <h2>주택 정보</h2>
+                <table border="1">
                     <th>No.</th>
-                    <th>주택 명</th>
+                    <th>주택 명(상세보기)</th>
                     <th>지역</th>
                     <th>추천 거주 인원</th>
                     <th>현재 찜한 인원</th>
@@ -16,7 +14,7 @@
                     <th>찜하기</th>
                     <tr v-for="(item, i) in apts" :key="i">
                         <td>{{item.no}}</td>
-                        <td>{{item.houseName}}</td>
+                        <td><button @click="detailinfo(item.houseName)">{{item.houseName}}</button></td>
                         <td>{{item.dong}}</td>
                         <td>{{item.residentsNum}}</td>
                         <td>1</td>
@@ -25,8 +23,7 @@
                         <td><button @click="registinterestapt(item.no, member.data.id)">찜하기</button></td>
                     </tr>
         </table>
-	  </div>
-	</div>
+		</div>
 </template>
 
 <script>
@@ -34,44 +31,36 @@
 import { mapActions, mapState } from "vuex";
 
 export default {
-    name: "InterestInfo",
-	data() {
-		return {
-			
-		};
-	},
-	computed: {
-		...mapState(["apts", "member"]),
-	},
-	watch: {
+    name: "AptList",
+    data() {
+        return {
+        };
+    },
+    computed: {
+        ...mapState(["apts", "member"]),
+    },
+    watch: {
         apts: function(){
             window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
         }
     },
-	mounted() {
+    mounted() {
 		window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
 	},
-	created() {
-		this.getdata();
-	},
-	methods: {
-		...mapActions(["registInterest"]),
-		...mapActions(["getAptListByGu"]),
-		getdata(){
-			console.log(this.member);
-			this.getAptListByGu(this.member.data.area);
-		},
-		addScript() {
+    methods: {
+        ...mapActions(["registInterest"]),
+        ...mapActions(["getAptDetail"]),
+        addScript() {
       		const script = document.createElement('script');
       		script.onload = () => window.kakao.maps.load(this.initMap);
       		script.src = "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=899e04a2203a1978625b8dbbeef42184&libraries=services";
       		document.head.appendChild(script);
 		},
-		initMap() {
+        initMap() {
       		var container = document.getElementById('map'); 
       		var options = {
         		center: new window.kakao.maps.LatLng(33.450701, 126.570667), 
-        		level: 5
+        		level: 3 
       		};
 
       		var map = new window.kakao.maps.Map(container, options); 
@@ -97,11 +86,15 @@ export default {
 				}); 
 			}
     	},
-		registinterestapt(no, userid){
+        registinterestapt(no, userid){
             let param = userid + "/" + no
             this.registInterest(param);
+        },
+        detailinfo(name){
+            this.getAptDetail(name);
+            this.$router.push({name: 'AptInfo'});
         }
-	},
+    },
 }
 </script>
 

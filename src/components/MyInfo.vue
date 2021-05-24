@@ -17,8 +17,8 @@
 	      <tr>
 	        <td colspan="2">
 	        <div class="form-group" align="center">
-	        	<button type="button" class="btn btn-warning" @click="movemodify();">수정</button>
-				<button type="button" class="	btn btn-primary" @click="movedelete();">삭제</button>
+	        	<button type="button" class="btn btn-warning" @click="$router.push({name: 'MyInfoUpdate', params: {id: member.data.id}})">수정</button>
+				<button type="button" class="	btn btn-primary" @click="del(member.data.id)">삭제</button>
 				</div>
 			</td>
 	      </tr>
@@ -30,13 +30,21 @@
 
 <script>
 
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: "MyInfo",
 	computed: {
     	...mapState(['member']),
   	},
+	  methods: {
+		  ...mapActions(["deleteUser"]),
+		  del(userid){
+			  console.log(userid);
+			this.deleteUser(userid);
+    		this.$router.push({name: 'Main'});
+		  }
+	  },
 }
 </script>
 

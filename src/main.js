@@ -5,9 +5,7 @@ import store from "./store";
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import * as VueGoogleMaps from "vue2-google-maps";
 
-// Install BootstrapVue
 Vue.use(BootstrapVue);
-// Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin); 
 
 Vue.use(VueGoogleMaps, {

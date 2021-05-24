@@ -200,7 +200,7 @@ export default {
       this.user.email = this.emailid + "@" + this.emaildomain;
       this.user.address = this.addr + " " + this.address_detail;
       this.user.birth = this.yy + this.mm + this.dd
-      this.member.area = this.gu;
+      this.user.area = this.gu;
       if (!err) alert(msg);
       else this.modifyinfo();
     },

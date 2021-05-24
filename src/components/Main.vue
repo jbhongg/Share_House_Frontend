@@ -26,6 +26,7 @@
 				</div>
 
 			</form>
+			<!--
 			<form class="form-inline" method="get"
 				action="${root}/house/apartment" id="aptSearchForm">
 				<input type="hidden" id="searchDong" name="searchDong" value="">
@@ -33,48 +34,15 @@
 					placeholder="아파트 이름"> 
 					<button type="button" class="btn btn-outline-primary btn-sm" id="aptSearch" name="aptSearch">search</button>
 			</form>
+			-->
 		</div>
 	</div>
 		</div>
 	<div class="row mt-5" style="justify-content: center;">
-		<div class="col-4" id="col-houseinfo" style="display: none;">
-			<div class="sidebar">
-				<div class="block clearfix" id="houseInfo">
-					<h3 class="title">거래 정보</h3>
-					<hr>
-					<div class="separator-2"></div>
-				</div>
-				<form name="pageform" id="pageform" method="GET" action=""
-					style="display: none;">
-				<input type="hidden" name="pg" id="pg" value=""> <input
-						type="hidden" name="dong" id="dong" value="${dong}"> <input
-						type="hidden" name="aptName" id="aptName" value="${aptName}">
-				</form>
-
-				<table>
-					<tr>
-						<td>${navigation.navigator }</td>
-					</tr>
-				</table>
-			</div>
-		</div>
 		<div class="col-8">
-				<!-- 지도 띄우는 부분 start -->
 				<div id="map" class="map"
 					style="width: 100%; height: 600px; margin: auto; position: relative; overflow: hidden;">
-					<!-- <div
-						style="height: 100%; width: 100%; position: absolute; top: 0px; left: 0px; background-color: rgb(229, 227, 223);">
-						<div class="gm-err-container">
-							<div class="gm-err-content">
-								<div class="gm-err-icon">
-									<GmapMap ref="mapRef" :center="center" :zoom="16" style="width:100vw; height:100vh"></GmapMap>
-								</div>
-							</div>
-						</div>
-					</div> -->
 				</div>
-		
-				<!-- 지도 띄우는 부분 end -->
 			</div>
 	</div>
 </div>
@@ -132,30 +100,30 @@ export default {
 		...mapActions(["getAptList"]),
 		addScript() {
       		const script = document.createElement('script');
-      		script.onload = () => kakao.maps.load(this.initMap);
+      		script.onload = () => window.kakao.maps.load(this.initMap);
       		script.src = "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=899e04a2203a1978625b8dbbeef42184&libraries=services";
       		document.head.appendChild(script);
 		},
 		initMap() {
       		var container = document.getElementById('map'); 
       		var options = {
-        		center: new kakao.maps.LatLng(33.450701, 126.570667),
-        		level: 3 //지도의 레벨(확대, 축소 정도)
+        		center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+        		level: 3 
       		};
 
-      		var map = new kakao.maps.Map(container, options);
-			var geocoder = new kakao.maps.services.Geocoder();
+      		var map = new window.kakao.maps.Map(container, options);
+			var geocoder = new window.kakao.maps.services.Geocoder();
 
 			for (var i = 0; i < this.pos.length; i++) {
 				geocoder.addressSearch(this.pos[i].name, function(result, status) {
-     			if (status === kakao.maps.services.Status.OK) {
+     			if (status === window.kakao.maps.services.Status.OK) {
 
-        			var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-        			var marker = new kakao.maps.Marker({
+        			var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+        			var marker = new window.kakao.maps.Marker({
 						map: map,
             			position: coords
         			});
-        			var infowindow = new kakao.maps.InfoWindow({
+        			var infowindow = new window.kakao.maps.InfoWindow({
             			content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
         			});
         			infowindow.open(map, marker);

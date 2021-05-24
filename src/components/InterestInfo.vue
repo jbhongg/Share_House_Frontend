@@ -3,26 +3,12 @@
 	  <div class="col-lg-8" align="center">
 	  <h2>관심 지역 확인</h2>
 	  <br>
-      <!-- userinfo == null -->
-	  <h3>관심 지역이 없습니다.</h3>
-
-      <!-- userinfo != null -->
 	  <div id="map" class="map"
 					style="width: 100%; height: 600px; margin: auto; position: relative; overflow: hidden;">
-					<!-- <div
-						style="height: 100%; width: 100%; position: absolute; top: 0px; left: 0px; background-color: rgb(229, 227, 223);">
-						<div class="gm-err-container">
-							<div class="gm-err-content">
-								<div class="gm-err-icon">
-									<GmapMap ref="mapRef" :center="center" :zoom="16" style="width:100vw; height:100vh"></GmapMap>
-								</div>
-							</div>
-						</div>
-					</div> -->
 				</div>
 	   <table border="1">
                     <th>No.</th>
-                    <th>주택 명(상세보기)</th>
+                    <th>주택 명</th>
                     <th>지역</th>
                     <th>추천 거주 인원</th>
                     <th>현재 찜한 인원</th>
@@ -30,7 +16,7 @@
                     <th>찜하기</th>
                     <tr v-for="(item, i) in apts" :key="i">
                         <td>{{item.no}}</td>
-                        <td><button @click="detailinfo(item.houseName)">{{item.houseName}}</button></td>
+                        <td>{{item.houseName}}</td>
                         <td>{{item.dong}}</td>
                         <td>{{item.residentsNum}}</td>
                         <td>1</td>
@@ -57,6 +43,11 @@ export default {
 	computed: {
 		...mapState(["apts", "member"]),
 	},
+	watch: {
+        apts: function(){
+            window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
+        }
+    },
 	mounted() {
 		window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
 	},
@@ -64,38 +55,40 @@ export default {
 		this.getdata();
 	},
 	methods: {
+		...mapActions(["registInterest"]),
 		...mapActions(["getAptListByGu"]),
 		getdata(){
+			console.log(this.member);
 			this.getAptListByGu(this.member.data.area);
 		},
 		addScript() {
       		const script = document.createElement('script');
-      		script.onload = () => kakao.maps.load(this.initMap);
+      		script.onload = () => window.kakao.maps.load(this.initMap);
       		script.src = "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=899e04a2203a1978625b8dbbeef42184&libraries=services";
       		document.head.appendChild(script);
 		},
 		initMap() {
       		var container = document.getElementById('map'); 
       		var options = {
-        		center: new kakao.maps.LatLng(33.450701, 126.570667), 
-        		level: 3 
+        		center: new window.kakao.maps.LatLng(33.450701, 126.570667), 
+        		level: 5
       		};
 
-      		var map = new kakao.maps.Map(container, options); 
-			var geocoder = new kakao.maps.services.Geocoder();
+      		var map = new window.kakao.maps.Map(container, options); 
+			var geocoder = new window.kakao.maps.services.Geocoder();
 
 			for (var i = 0; i < this.apts.length; i++) {
                 let title = this.apts[i].houseName;
 				geocoder.addressSearch(this.apts[i].address, function(result, status) {
 
-     			if (status === kakao.maps.services.Status.OK) {
+     			if (status === window.kakao.maps.services.Status.OK) {
 
-        			var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-        			var marker = new kakao.maps.Marker({
+        			var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+        			var marker = new window.kakao.maps.Marker({
 						map: map,
             			position: coords
         			});
-        			var infowindow = new kakao.maps.InfoWindow({
+        			var infowindow = new window.kakao.maps.InfoWindow({
             			content: `<div style="width:150px;text-align:center;padding:6px 0;">${title}</div>`
         			});
         			infowindow.open(map, marker);
@@ -104,6 +97,10 @@ export default {
 				}); 
 			}
     	},
+		registinterestapt(no, userid){
+            let param = userid + "/" + no
+            this.registInterest(param);
+        }
 	},
 }
 </script>

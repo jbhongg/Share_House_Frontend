@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-container class="container">
-        <b-table id="aptdetail_table" :items="apt.data" :fields="fields" >
+        <b-table id="aptdetail_table" :items="apt" :fields="fields" >
 	  </b-table>
         </b-container>
     </div>

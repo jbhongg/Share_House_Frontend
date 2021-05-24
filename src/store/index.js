@@ -108,6 +108,7 @@ export default new Vuex.Store({
   },
   actions: {
     joinMember({ commit }, member) {
+      console.log(member);
       axios
         .post("http://localhost:8092/user/join", member)
         .then((response) => {
@@ -213,9 +214,11 @@ export default new Vuex.Store({
         });
     },
     getAptListByGu({ commit }, code) {
+      console.log(code);
       axios
-        .get("http://localhost:8092/house/dong/" + code)
+        .get("http://localhost:8092/house/interest/" + code)
         .then((response) => {
+          console.log(response.data.list);
           commit("SET_APTS", response.data.list);
         })
         .catch((error) => {
@@ -227,6 +230,7 @@ export default new Vuex.Store({
       axios
         .get("http://localhost:8092/house/search/" + name, { params: { dong } })
         .then((response) => {
+          console.log(response);
           context.commit("SET_APT", response.data.list);
         })
         .catch((error) => {
@@ -277,6 +281,7 @@ export default new Vuex.Store({
       });
     },
     updateMember({ commit }, member) {
+      console.log(member);
       axios
       .put("http://localhost:8092/user/" + member.id, member)
     .then((response) => {

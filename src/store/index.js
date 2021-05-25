@@ -274,6 +274,16 @@ export default new Vuex.Store({
           console.log(error);
         });
     },
+    getRoomsById({ commit }, userid) {
+      axios
+        .get("http://localhost:8092/chat/rooms/" + userid)
+        .then((response) => {
+          commit("SET_ROOMS", response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     getRoom({ commit }, no) {
       axios
         .get("http://localhost:8092/chat/room/" + no)

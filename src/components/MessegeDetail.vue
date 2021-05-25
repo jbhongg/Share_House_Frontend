@@ -85,7 +85,7 @@ export default {
 			if(this.msg.data){
 				for(let i=this.msg.data.length-1; i>-1; i--){
           		let m={
-            		'senderName':this.msg.data[i].senderName,
+            		'senderName':this.msg.data[i].senderId,
             		'content':this.msg.data[i].content,
             		'style': this.msg.data[i].senderId == this.id ? 'myMsg':'otherMsg'
           		}
@@ -93,7 +93,7 @@ export default {
         	}
 			console.log(this.message);
 			}
-		}
+		},
     },
 }
 </script>

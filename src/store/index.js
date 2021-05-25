@@ -154,7 +154,7 @@ export default new Vuex.Store({
       axios
         .post("http://localhost:8092/chat/room/" + name)
         .then((response) => {
-          alert(response.data.roomMame + "번 방 개설에 성공하였습니다.");
+          alert(response.data.roomName + "번 방 개설에 성공하였습니다.");
           commit("SET_CHAT", response);
         })
         .catch((error) => {
@@ -361,7 +361,7 @@ export default new Vuex.Store({
     .catch((error) => {
       console.dir(error);
     });
-    },
+    }
   },
   plugins: [createPersistedState()],
 });

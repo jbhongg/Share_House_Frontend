@@ -19,7 +19,13 @@ export default {
         return {
              fields: [
                 { label: "No.", key: "no" },
-                { label: "floor.", key: "floor" },
+                { label: "이름.", key: "houseName" },
+                { label: "주소", key: "address" },
+                { label: "면적", key: "area" },
+                { label: "층", key: "floor" },
+                { label: "설립년도", key: "buildYear" },
+                { label: "전세", key: "deposit" },
+                { label: "월세", key: "monthlyRent" },
                 { label: "삭제", key: "delete" },
              ],
         };

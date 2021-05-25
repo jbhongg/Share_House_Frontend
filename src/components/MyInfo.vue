@@ -40,7 +40,6 @@ export default {
 	  methods: {
 		  ...mapActions(["deleteUser"]),
 		  del(userid){
-			  console.log(userid);
 			this.deleteUser(userid);
     		this.$router.push({name: 'Main'});
 		  }

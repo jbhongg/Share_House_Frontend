@@ -1,12 +1,19 @@
 <template>
-<div class="container" align="center">
-	  <div class="col-lg-8" align="center">
-	  <h2>관심 지역 확인</h2>
-	  <br>
+<div class="row mt-5">
+	  <div class="col-6">
 	  <div id="map" class="map"
-					style="width: 100%; height: 600px; margin: auto; position: relative; overflow: hidden;">
+					style="width: 70%; height: 600px; margin: auto; position: relative; overflow: hidden;">
 				</div>
-	   <table border="1">
+	  </div>
+	  <div class="col-6">
+		  <div class="sidebar">
+			  <div class="block clearfix" id="interestInfo">
+				  <h2 class="title">주택 정보</h2>
+				  <hr>
+				  <div class="separator-3"></div>
+	   <table border="1" v-if="typeof(apts) != 'undefined'">
+		   <div class="media margin-clear">
+			   <div class="media-body">
                     <th>No.</th>
                     <th>주택 명</th>
                     <th>지역</th>
@@ -24,9 +31,18 @@
                         <td v-else>{{item.monthlyRent}}(월)</td>
                         <td><button @click="registinterestapt(item.no, member.data.id)">찜하기</button></td>
                     </tr>
+			   </div>
+		   </div>
         </table>
+		<div class="media margin-clear">
+                          <div class="media-body">
+        <h3 v-if="typeof(apts) == 'undefined'">주택 정보가 없습니다</h3>
+                          </div>
+        </div>
+		</div>
+		  </div>
 	  </div>
-	</div>
+	  </div>
 </template>
 
 <script>
@@ -68,6 +84,7 @@ export default {
       		document.head.appendChild(script);
 		},
 		initMap() {
+			
       		var container = document.getElementById('map'); 
       		var options = {
         		center: new window.kakao.maps.LatLng(33.450701, 126.570667), 

@@ -1,16 +1,25 @@
 <template>
-		<div class="col-8">
+<div class="row mt-5">
+		<div class="col-6">
 				<div id="map" class="map" v-if="typeof(apts) != 'undefined'"
-					style="width: 100%; height: 600px; margin: auto; position: relative; overflow: hidden;">
+					style="width: 70%; height: 600px; margin: auto; position: relative; overflow: hidden;">
 				</div>
-                <h2>주택 정보</h2>
+        </div>
+        <div class="col-6">
+                <div class="sidebar">
+                    <div class="block clearfix" id="houseInfo">
+                <h2 class="title">주택 정보</h2>
+                <hr>
+                <div class="separator-3"></div>
                 <table border="1" v-if="typeof(apts) != 'undefined'">
+                     <div class="media margin-clear">
+                         <div class="media-body">
                     <th>No.</th>
                     <th>주택 명(상세보기)</th>
                     <th>지역</th>
                     <th>추천 거주 인원</th>
                     <th>현재 찜한 인원</th>
-                    <th>예상 전/월세</th>
+                    <th >예상 전/월세</th>
                     <th>찜하기</th>
                     <th>채팅방</th>
                     <tr v-for="(item, i) in apts" :key="i">
@@ -24,9 +33,18 @@
                         <td><button @click="registinterestapt(item.no, member.data.id)">찜하기</button></td>
                         <td><button @click="enterchat(item.no)">채팅방 입장하기</button></td>
                     </tr>
+                     </div>
+                     </div>
         </table>
+        <div class="media margin-clear">
+                          <div class="media-body">
         <h3 v-if="typeof(apts) == 'undefined'">주택 정보가 없습니다</h3>
+                          </div>
+        </div>
+        </div>
+        </div>
 		</div>
+</div>
 </template>
 
 <script>
@@ -120,5 +138,13 @@ export default {
 </script>
 
 <style>
-
+ table {
+    width: 100%;
+    border-top: 1px solid #444444;
+    border-collapse: collapse;
+  }
+  th, td {
+    border-bottom: 1px solid #444444;
+    padding: 10px;
+  }
 </style>

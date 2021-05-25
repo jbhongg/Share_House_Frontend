@@ -1,40 +1,24 @@
 <template>
   <div>
     <b-container v-if="typeof boards != 'undefined'" class="container">
-      <table class="table table-borderless">
-        <tr>
-          <td align="right">
-            <button
-              type="button"
-              id="mvWriteBtn"
-              class="btn btn-link"
-              v-if="login !== '1'"
-              @click="$router.push({ name: 'ArticleWrite' })"
-            >
-              글쓰기
-            </button>
-          </td>
-        </tr>
-      </table>
+      <div id="write" align="right">
+        <b-button
+          pill
+          id="mvWriteBtn"
+          v-if="login !== '1'"
+          @click="$router.push({ name: 'ArticleWrite' })"
+        >
+          글쓰기
+        </b-button>
+      </div>
       <b-table id="board_table" :items="boards" :fields="fields">
-        <template #cell(update)="articleno">
+        <template #cell(update)="article">
           <b-button
-            v-if="articleno.item.userid === member.data.id"
             size="sm"
-            @click="
-              $router.push({ name: 'ArticleUpdate', params: { no: articleno.item.articleno } })
-            "
             class="mr-2"
-            >수정
-          </b-button>
-        </template>
-        <template #cell(delete)="articleno">
-          <b-button
-            v-if="articleno.item.userid === member.data.id"
-            size="sm"
-            @click="deleteBoard(articleno)"
-            class="mr-2"
-            >삭제
+            @click="$router.push({ name: 'ArticleUpdate', params: { no: article.item.articleno } })"
+          >
+            글 보기
           </b-button>
         </template>
       </b-table>
@@ -47,7 +31,7 @@
         aria-controls="board_table"
         align="center"
         @page-click="pageMove"
-      />
+      ></b-pagination>
     </b-container>
     <b-container v-else class="container">
       <table class="table table-borderless">
@@ -72,6 +56,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+
 export default {
   name: "ArticleList",
   data() {
@@ -79,11 +64,9 @@ export default {
       fields: [
         { label: "글 번호", key: "articleno" },
         { label: "ID", key: "userid" },
-        { label: "제목", key: "subject" },
-        { label: "내용", key: "content" },
-        { label: "작성 일자", key: "regtime" },
-        { label: "수정", key: "update" },
-        { label: "삭제", key: "delete" },
+        { label: "제목", key: "subject", sortable: true },
+        { label: "작성 일자", key: "regtime", sortable: true },
+        { label: "", key: "update" },
       ],
     };
   },
@@ -115,4 +98,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#write {
+  margin: 10px;
+}
+</style>

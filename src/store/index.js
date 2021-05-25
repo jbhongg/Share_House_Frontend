@@ -1,8 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
-import createPersistedState from "vuex-persistedstate"
-
+import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
@@ -45,8 +44,7 @@ export default new Vuex.Store({
       if (member.data.length !== 0) {
         state.login = "2";
         state.member = member;
-      }
-      else {
+      } else {
         alert("아이디 또는 비밀번호가 일치하지 않습니다.");
       }
     },
@@ -54,7 +52,7 @@ export default new Vuex.Store({
       state.login = "1";
     },
     WRITE_ARTICLE(state, article) {
-      state.article= article;
+      state.article = article;
     },
     SET_BOARDS(state, payload) {
       state.boards = payload;
@@ -72,7 +70,7 @@ export default new Vuex.Store({
       state.boards;
     },
     UPDATE_ARTICLE(state, article) {
-      state.article= article;
+      state.article = article;
     },
     DELETE_USER(state) {
       state.login = "1";
@@ -96,7 +94,7 @@ export default new Vuex.Store({
       state.apts = apts;
     },
     SET_DONGNUM(state, code) {
-      state.dongnum = code
+      state.dongnum = code;
     },
     SET_WISH(state) {
       console.log(state.wishs);
@@ -111,10 +109,9 @@ export default new Vuex.Store({
       state.rooms = rooms;
     },
     SET_ROOM(state, room) {
-      if (room.data + 1 == '1') {
+      if (room.data + 1 == "1") {
         state.room = "1";
-      }
-      else {
+      } else {
         state.room = "2";
         state.roomInfo = room.data;
       }
@@ -127,7 +124,7 @@ export default new Vuex.Store({
     },
     SET_MSG(state, msg) {
       state.msg = msg;
-    }
+    },
   },
   actions: {
     joinMember({ commit }, member) {
@@ -197,12 +194,12 @@ export default new Vuex.Store({
     deleteWishList({ commit }, param) {
       axios
         .delete("http://localhost:8092/wish/" + param)
-      .then((response) => {
-        commit("DELETE_WISH", response);
-      })
-      .catch((error) => {
-        console.dir(error);
-      });
+        .then((response) => {
+          commit("DELETE_WISH", response);
+        })
+        .catch((error) => {
+          console.dir(error);
+        });
     },
     getSidoList({ commit }) {
       axios
@@ -257,7 +254,7 @@ export default new Vuex.Store({
         });
     },
     getAptDetail(context, name) {
-      let dong = context.state.dongnum
+      let dong = context.state.dongnum;
       axios
         .get("http://localhost:8092/house/search/" + name, { params: { dong } })
         .then((response) => {
@@ -314,54 +311,54 @@ export default new Vuex.Store({
     },
     writeArticle({ commit }, article) {
       axios
-      .post("http://localhost:8092/board", article)
-      .then((response) => {
-        commit("WRITE_ARTICLE", response);
-      })
-      .catch((error) => {
-        console.dir(error);
-      });
+        .post("http://localhost:8092/board", article)
+        .then((response) => {
+          commit("WRITE_ARTICLE", response);
+        })
+        .catch((error) => {
+          console.dir(error);
+        });
     },
     deleteArticle({ commit }, articleno) {
       axios
-        .delete("http://localhost:8092/board/" + articleno.item.articleno )
-      .then((response) => {
-        commit("DELETE_ARTICLE", response);
-      })
-      .catch((error) => {
-        console.dir(error);
-      });
+        .delete("http://localhost:8092/board/" + articleno.articleno)
+        .then((response) => {
+          commit("DELETE_ARTICLE", response);
+        })
+        .catch((error) => {
+          console.dir(error);
+        });
     },
     updateArticle({ commit }, article) {
       axios
-      .put("http://localhost:8092/board/" + article.articleno, article)
-    .then((response) => {
-      commit("UPDATE_ARTICLE", response);
-    })
-    .catch((error) => {
-      console.dir(error);
-    });
+        .put("http://localhost:8092/board/" + article.articleno, article)
+        .then((response) => {
+          commit("UPDATE_ARTICLE", response);
+        })
+        .catch((error) => {
+          console.dir(error);
+        });
     },
     deleteUser({ commit }, userid) {
       axios
-        .delete("http://localhost:8092/user/" + userid )
-      .then((response) => {
-        commit("DELETE_USER", response);
-      })
-      .catch((error) => {
-        console.dir(error);
-      });
+        .delete("http://localhost:8092/user/" + userid)
+        .then((response) => {
+          commit("DELETE_USER", response);
+        })
+        .catch((error) => {
+          console.dir(error);
+        });
     },
     updateMember({ commit }, member) {
       axios
-      .put("http://localhost:8092/user/" + member.id, member)
-    .then((response) => {
-      commit("UPDATE_MEMBER", response);
-    })
-    .catch((error) => {
-      console.dir(error);
-    });
-    }
+        .put("http://localhost:8092/user/" + member.id, member)
+        .then((response) => {
+          commit("UPDATE_MEMBER", response);
+        })
+        .catch((error) => {
+          console.dir(error);
+        });
+    },
   },
   plugins: [createPersistedState()],
 });

@@ -3,17 +3,14 @@
 </template>
 
 <script>
-
-import ArticleUpdateForm from '@/components/ArticleUpdateForm.vue';
+import ArticleUpdateForm from "@/components/article/ArticleUpdateForm.vue";
 
 export default {
-    name: 'ArticleUpdate',
-    components: {
-        ArticleUpdateForm,
-    },
-}
+  name: "ArticleUpdate",
+  components: {
+    ArticleUpdateForm,
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

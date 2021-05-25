@@ -93,6 +93,11 @@ export default {
 
       		var map = new window.kakao.maps.Map(container, options); 
 			var geocoder = new window.kakao.maps.services.Geocoder();
+			var imageSrc = 'https://littledeep.com/wp-content/uploads/2019/04/littledeep_house_style2.png',
+				imageSize = new window.kakao.maps.Size(64, 69),
+				imageOption = {offset: new window.kakao.maps.Point(27, 69)};
+
+			var markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
 			for (var i = 0; i < this.apts.length; i++) {
                 let title = this.apts[i].houseName;
@@ -103,12 +108,17 @@ export default {
         			var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
         			var marker = new window.kakao.maps.Marker({
 						map: map,
-            			position: coords
+            			position: coords,
+						image: markerImage
         			});
         			var infowindow = new window.kakao.maps.InfoWindow({
-            			content: `<div style="width:150px;text-align:center;padding:6px 0;">${title}</div>`
+            			content: `<div style="width:150px;text-align:center;padding:6px 0;">${title}</div>`,
+						removable : true
         			});
-        			infowindow.open(map, marker);
+        			window.kakao.maps.event.addListener(marker, 'click', function() {
+      					// 마커 위에 인포윈도우를 표시합니다
+      					infowindow.open(map, marker);  
+					});
         			map.setCenter(coords);
     			}
 				}); 

@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
       <router-link to="/"
-        ><img id="logo-img-mobile" src="@/assets/home.png" width="100" alt="The SSAFY"
+        ><img id="logo-img-mobile" src="@/assets/home.png" width="80" alt="The SSAFY"
       /></router-link>
       <button
         class="navbar-toggler navbar-toggler-right"

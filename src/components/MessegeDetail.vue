@@ -7,13 +7,13 @@
         <div v-for="(m, idx) in message" :key="idx">
       		<div v-bind:class="m.style">
       			<h5 style="margin:3px">
-        			{{m.sendername}}
+        			{{m.senderName}}
         		</h5>
       			{{m.content}}
       		</div>
     	</div>
     	<hr />
-    	<input type="text" v-model="content" placeholder="보낼 메세지" size="100" />
+    	<input type="text" v-on:keyup.enter="sendMessage()" v-model="content" placeholder="보낼 메세지" size="100" />
     	<button @click="sendMessage()"> SEND</button>
     </div>
 </template>
@@ -68,7 +68,7 @@ export default {
      		if(this.content.trim() !='' && this.stompClient!=null) {
         		let chatMessage = {
           			'content': this.content,
-          			'chatroomId' : this.roomid,
+          			'chatRoomId' : this.roomid,
           			'senderName':this.nickname,
           			'senderId': this.id,
           			'id':"0"
@@ -81,15 +81,17 @@ export default {
 		getChat(no){
 			this.getMsg(no);
 			this.message = [];
-			if(!isNaN(this.msg)){
-				for(let i=this.msg.length-1; i>-1; i--){
+			console.log(this.msg);
+			if(this.msg.data){
+				for(let i=this.msg.data.length-1; i>-1; i--){
           		let m={
-            		'senderName':this.msg[i].senderName,
-            		'content':this.msg[i].content,
-            		'style': this.msg[i].senderId == this.id ? 'myMsg':'otherMsg'
+            		'senderName':this.msg.data[i].senderName,
+            		'content':this.msg.data[i].content,
+            		'style': this.msg.data[i].senderId == this.id ? 'myMsg':'otherMsg'
           		}
           		this.message.push(m);
         	}
+			console.log(this.message);
 			}
 		}
     },

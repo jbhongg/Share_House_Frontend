@@ -299,7 +299,7 @@ export default new Vuex.Store({
     },
     getMsg({ commit }, no) {
       axios
-        .get("http://localhost:8092/chat/room/" + no)
+        .get("http://localhost:8092/chat/room/message/" + no)
         .then((response) => {
           console.log("getMsg");
           console.log(response);

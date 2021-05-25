@@ -24,7 +24,4 @@ export default {
 </script>
 
 <style>
-.masthead {
-  height: 350px;
-}
 </style>

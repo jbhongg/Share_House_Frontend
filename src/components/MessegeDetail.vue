@@ -4,14 +4,16 @@
             <h2>{{$route.params.name}} 채팅방</h2>
         </div>
 		<hr />
-        <div v-for="(m, idx) in message" :key="idx">
+		<div class="row mt-5" style="justify-content: center;">
+        <div class="col-7" style="background: skyblue" v-for="(m, idx) in message" :key="idx">
       		<div v-bind:class="m.style">
-      			<h5 style="margin:3px">
+      			<h5 v-if="m.style === 'otherMsg'" style="margin:3px">
         			{{m.senderName}}
         		</h5>
       			{{m.content}}
       		</div>
     	</div>
+		</div>
     	<hr />
     	<input type="text" v-on:keyup.enter="sendMessage()" v-model="content" placeholder="보낼 메세지" size="100" />
     	<button @click="sendMessage()"> SEND</button>
@@ -98,6 +100,32 @@ export default {
 }
 </script>
 
-<style>
+<style >
+.myMsg {
+			overflow:hidden;
+		height:auto;
+	margin-top: 10px;
+	text-align: right;
+	color : black;
+	position: relative;
+	background: #d5c700;
+	border-radius: 5px;
+	border: 1px solid #000000;
+	width: 30%;
+	margin-left: 70%;
+}
+.otherMsg{
+overflow:hidden;
+	height:auto;
+  text-align: left;
+  	margin-top: 10px;
+	color : black;
+	position: relative;
+	background: #ffffff;
+	border-radius: 5px;
+	border: 1px solid #000000;
+	width: 30%;
+	
+}
 
 </style>

@@ -1,10 +1,10 @@
 <template>
 		<div class="col-8">
-				<div id="map" class="map"
+				<div id="map" class="map" v-if="typeof(apts) != 'undefined'"
 					style="width: 100%; height: 600px; margin: auto; position: relative; overflow: hidden;">
 				</div>
-               <h2>주택 정보</h2>
-                <table border="1">
+                <h2>주택 정보</h2>
+                <table border="1" v-if="typeof(apts) != 'undefined'">
                     <th>No.</th>
                     <th>주택 명(상세보기)</th>
                     <th>지역</th>
@@ -12,6 +12,7 @@
                     <th>현재 찜한 인원</th>
                     <th>예상 전/월세</th>
                     <th>찜하기</th>
+                    <th>채팅방</th>
                     <tr v-for="(item, i) in apts" :key="i">
                         <td>{{item.no}}</td>
                         <td><button @click="detailinfo(item.houseName)">{{item.houseName}}</button></td>
@@ -21,8 +22,10 @@
                         <td v-if="item.monthlyRent == 0">{{item.deposit}}(전)</td>
                         <td v-else>{{item.monthlyRent}}(월)</td>
                         <td><button @click="registinterestapt(item.no, member.data.id)">찜하기</button></td>
+                        <td><button @click="enterchat(item.no)">채팅방 입장하기</button></td>
                     </tr>
         </table>
+        <h3 v-if="typeof(apts) == 'undefined'">주택 정보가 없습니다</h3>
 		</div>
 </template>
 
@@ -37,7 +40,7 @@ export default {
         };
     },
     computed: {
-        ...mapState(["apts", "member"]),
+        ...mapState(["apts", "member", "room", "roomInfo"]),
     },
     watch: {
         apts: function(){
@@ -50,6 +53,8 @@ export default {
     methods: {
         ...mapActions(["registInterest"]),
         ...mapActions(["getAptDetail"]),
+        ...mapActions(["getRoom"]),
+        ...mapActions(["registRoom"]),
         addScript() {
       		const script = document.createElement('script');
       		script.onload = () => window.kakao.maps.load(this.initMap);
@@ -57,7 +62,8 @@ export default {
       		document.head.appendChild(script);
 		},
         initMap() {
-      		var container = document.getElementById('map'); 
+            if(typeof(this.apts) != 'undefined'){
+            var container = document.getElementById('map'); 
       		var options = {
         		center: new window.kakao.maps.LatLng(33.450701, 126.570667), 
         		level: 3 
@@ -85,6 +91,8 @@ export default {
     			}
 				}); 
 			}
+            }
+
     	},
         registinterestapt(no, userid){
             let param = userid + "/" + no
@@ -93,7 +101,20 @@ export default {
         detailinfo(name){
             this.getAptDetail(name);
             this.$router.push({name: 'AptInfo'});
-        }
+        },
+        enterchat(no){
+            this.getRoom(no);
+            if(this.room == 1){
+                this.createRoom(no);
+                this.$router.push({name: 'Messege', params: {name: this.roomInfo.roomName, id: this.roomInfo.roomId}});
+            }
+            else{
+                this.$router.push({name: 'Messege', params: {name: this.roomInfo.roomName, id: this.roomInfo.roomId}});
+            }
+        },
+        createRoom(no){
+            this.registRoom(no);
+        },
     },
 }
 </script>

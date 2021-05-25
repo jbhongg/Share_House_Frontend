@@ -6,8 +6,8 @@
 			<div class="row">
 				<div class="col-lg-8 col-md-10 mx-auto">
 					<div class="site-heading">
-						<h1>HAPPY HOUSE</h1>
-						<span class="subheading">행복한 우리집</span>
+						<h1>SHARE HOUSE</h1>
+						<span class="subheading">함께 살아요</span>
 					</div>
 				</div>
 			</div>

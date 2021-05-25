@@ -10,12 +10,11 @@
 			</div>
             <div class="form-group" align="left">
           <label for="">생년월일</label>
-          <div id="bir_yy">
+          <br>
+          <div id="bir_yy" class="custom-control-inline">
               <span class="box">
                   <input type="text" id="yy" class="form-control" name="yy" maxlength="4" v-model="yy" ref="yy" placeholder="년(4자)">
               </span>
-          </div>
-          <div id="bir_mm">
               <span class="box">
                   <select id="mm" class="form-control" name="mm" v-model="mm" ref="mm">
                       <option value="">월</option>
@@ -33,9 +32,6 @@
                       <option value="12">12</option>
                   </select>
               </span>
-        </div>
-        <!-- BIRTH_DD -->
-        <div id="bir_dd">
             <span class="box">
                 <input type="text" id="dd" class="form-control" name="dd" v-model="dd" ref="dd" maxlength="2" placeholder="일">
             </span>
@@ -79,6 +75,7 @@
 			</div>
 			<div class="form-group" align="left">
 				<label for="tel">전화번호</label>
+        <br>
 				<div id="tel" class="custom-control-inline">
 				<select class="form-control" id="tel1" name="tel1" v-model="tel1" ref="tel1">
 					<option value="010">010</option>

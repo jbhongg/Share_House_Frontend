@@ -1,5 +1,8 @@
 <template>
   <div align="center">
+        <div class="col-lg-6" align="right">
+	    <strong>{{member.data.name}}</strong>님 환영합니다.
+	</div>
     <div class="col-lg-6" align="center">
       <h2>게시판 글 확인하기{{ no }}</h2>
       <div id="writeform">

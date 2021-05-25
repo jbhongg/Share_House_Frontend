@@ -34,21 +34,16 @@
       ></b-pagination>
     </b-container>
     <b-container v-else class="container">
-      <table class="table table-borderless">
-        <tr>
-          <td align="right">
-            <button
-              type="button"
+<div id="write" align="right">
+            <b-button
+              pill
               id="mvWriteBtn"
-              class="btn btn-link"
               v-if="login !== '1'"
               @click="$router.push({ name: 'ArticleWrite' })"
             >
               글쓰기
-            </button>
-          </td>
-        </tr>
-      </table>
+            </b-button>
+</div>
       <h3>글 많이 써주세요</h3>
     </b-container>
   </div>

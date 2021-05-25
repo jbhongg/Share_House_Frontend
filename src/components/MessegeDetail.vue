@@ -7,7 +7,7 @@
         <div v-for="(m, idx) in message" :key="idx">
       		<div v-bind:class="m.style">
       			<h5 style="margin:3px">
-        			{{m.senderNickname}}
+        			{{m.sendername}}
         		</h5>
       			{{m.content}}
       		</div>

@@ -1,131 +1,151 @@
 <template>
+  <div>
     <div>
-        <div>
-            <h2>{{$route.params.name}} 채팅방</h2>
-        </div>
-		<hr />
-		<div class="row mt-5" style="justify-content: center;">
-        <div class="col-7" style="background: skyblue" v-for="(m, idx) in message" :key="idx">
-      		<div v-bind:class="m.style">
-      			<h5 v-if="m.style === 'otherMsg'" style="margin:3px">
-        			{{m.senderName}}
-        		</h5>
-      			{{m.content}}
-      		</div>
-    	</div>
-		</div>
-    	<hr />
-    	<input type="text" v-on:keyup.enter="sendMessage()" v-model="content" placeholder="보낼 메세지" size="100" />
-    	<button @click="sendMessage()"> SEND</button>
+      <h2>{{ $route.params.name }} 채팅방</h2>
     </div>
+    <hr />
+    <div class="row mt-5" style="justify-content: center">
+      <div class="col-7" style="background: skyblue" v-for="(m, idx) in message" :key="idx">
+        <div v-bind:class="m.style">
+          <h5 v-if="m.style === 'otherMsg'" style="margin: 3px">
+            {{ m.senderName }}
+          </h5>
+          {{ m.content }}
+        </div>
+      </div>
+    </div>
+    <hr />
+    <input
+      type="text"
+      v-on:keyup.enter="sendMessage()"
+      v-model="content"
+      placeholder="보낼 메세지"
+      size="100"
+    />
+    <button @click="sendMessage()">SEND</button>
+  </div>
 </template>
 
 <script>
-import Stomp from 'webstomp-client'
-import SockJS from 'sockjs-client'
+import Stomp from "webstomp-client";
+import SockJS from "sockjs-client";
+import http from "@/util/http-common";
 
 import { mapActions, mapState } from "vuex";
 export default {
-    name: "MeseegeDetail",
-    data() {
-        return {
-      		id: -1,
-      		nickname: '',
-      		title:'',
-      		roomid: -1,
-      		idx:0,
-      		message:[],
-      		content:"",
-			stompClient:null
-        }
-    },
-      computed: {
+  name: "MeseegeDetail",
+  data() {
+    return {
+      id: -1,
+      nickname: "",
+      title: "",
+      roomid: -1,
+      idx: 0,
+      message: [],
+      content: "",
+      stompClient: null,
+    };
+  },
+  computed: {
     ...mapState(["roomInfo", "member", "msg"]),
   },
-    created() {
-        this.id = this.member.data.id;
-		this.roomid = this.$route.params.id;
-    	this.nickname = this.member.data.id;
-		this.getChat(this.roomid);
-		let socket = new SockJS('http://localhost:8092/ws');
-    	this.stompClient = Stomp.over(socket);
-    	this.stompClient.connect({}, frame=>{
-      		console.log("success", frame)
-      		this.stompClient.subscribe("/sub/"+this.roomid, res=>{
-        		let jsonBody = JSON.parse(res.body);
-             	let m={
-            		'senderName':jsonBody.senderName,
-            		'content': jsonBody.content,
-            		'style': jsonBody.senderId == this.id ? 'myMsg':'otherMsg'
-          		}
-          		this.message.push(m);
-      		})
-    	}, err=>{
-			console.log("fail", err);
-    	})
+  created() {
+    this.id = this.member.data.id;
+    this.roomid = this.$route.params.id;
+    this.nickname = this.member.data.id;
+    console.log(this.roomid);
+    http
+      .get("/chat/room/message/" + this.roomid)
+      .then((response) => {
+        console.log("getMsg");
+        console.log(response);
+        this.message = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    this.getChat(this.roomid);
+    let socket = new SockJS("http://localhost:8092/ws");
+    this.stompClient = Stomp.over(socket);
+    this.stompClient.connect(
+      {},
+      (frame) => {
+        console.log("success", frame);
+        this.stompClient.subscribe("/sub/" + this.roomid, (res) => {
+          let jsonBody = JSON.parse(res.body);
+          let m = {
+            senderName: jsonBody.senderName,
+            content: jsonBody.content,
+            style: jsonBody.senderId == this.id ? "myMsg" : "otherMsg",
+          };
+          this.message.push(m);
+        });
+      },
+      (err) => {
+        console.log("fail", err);
+      }
+    );
+  },
+  methods: {
+    ...mapActions(["getMsg"]),
+    sendMessage() {
+      if (this.content.trim() != "" && this.stompClient != null) {
+        let chatMessage = {
+          content: this.content,
+          chatRoomId: this.roomid,
+          senderName: this.nickname,
+          senderId: this.id,
+          id: "0",
+        };
+        this.stompClient.send("/pub/message", JSON.stringify(chatMessage), {});
+
+        this.content = "";
+      }
     },
-    methods: {
-		...mapActions(["getMsg"]),
-		sendMessage(){
-     		if(this.content.trim() !='' && this.stompClient!=null) {
-        		let chatMessage = {
-          			'content': this.content,
-          			'chatRoomId' : this.roomid,
-          			'senderName':this.nickname,
-          			'senderId': this.id,
-          			'id':"0"
-        		}
-        		this.stompClient.send("/pub/message", JSON.stringify(chatMessage),{});
-   
-        		this.content='';
-    		}
-    	},
-		getChat(no){
-			this.getMsg(no);
-			this.message = [];
-			console.log(this.msg);
-			if(this.msg.data){
-				for(let i=this.msg.data.length-1; i>-1; i--){
-          		let m={
-            		'senderName':this.msg.data[i].senderId,
-            		'content':this.msg.data[i].content,
-            		'style': this.msg.data[i].senderId == this.id ? 'myMsg':'otherMsg'
-          		}
-          		this.message.push(m);
-        	}
-			console.log(this.message);
-			}
-		},
+    getChat(no) {
+      this.getMsg(no);
+      this.message = [];
+      console.log(this.msg);
+      if (this.msg.data) {
+        for (let i = this.msg.data.length - 1; i > -1; i--) {
+          let m = {
+            senderName: this.msg.data[i].senderId,
+            content: this.msg.data[i].content,
+            style: this.msg.data[i].senderId == this.id ? "myMsg" : "otherMsg",
+          };
+          this.message.push(m);
+        }
+        console.log(this.message);
+      }
     },
-}
+  },
+};
 </script>
 
-<style >
+<style>
 .myMsg {
-			overflow:hidden;
-		height:auto;
-	margin-top: 10px;
-	text-align: right;
-	color : black;
-	position: relative;
-	background: #d5c700;
-	border-radius: 5px;
-	border: 1px solid #000000;
-	width: 30%;
-	margin-left: 70%;
+  overflow: hidden;
+  height: auto;
+  margin-top: 10px;
+  text-align: right;
+  color: black;
+  position: relative;
+  background: #d5c700;
+  border-radius: 5px;
+  border: 1px solid #000000;
+  width: 30%;
+  margin-left: 70%;
 }
-.otherMsg{
-overflow:hidden;
-	height:auto;
+.otherMsg {
+  overflow: hidden;
+  height: auto;
   text-align: left;
-  	margin-top: 10px;
-	color : black;
-	position: relative;
-	background: #ffffff;
-	border-radius: 5px;
-	border: 1px solid #000000;
-	width: 30%;
-	
+  margin-top: 10px;
+  color: black;
+  position: relative;
+  background: #ffffff;
+  border-radius: 5px;
+  border: 1px solid #000000;
+  width: 30%;
 }
-
 </style>

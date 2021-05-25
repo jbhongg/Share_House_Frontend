@@ -36,26 +36,25 @@
 		</div>
         
 	</nav>
-
 </template>
 
 <script>
+
 import { mapActions } from "vuex";
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 
 export default {
-  name: "Nav",
-  computed: {
-    ...mapState(["login"]),
-  },
-  methods: {
-    ...mapActions(["logoutMember"]),
-    logout() {
-      this.logoutMember();
-      this.$router.push({ name: "Main" });
-    },
-  },
-};
+    name: 'Nav',
+	computed: {
+    	...mapState(['login']),
+  	},
+	  methods: {
+		  ...mapActions(["logoutMember"]),
+		  logout(){
+			this.logoutMember();
+		  }
+	  },
+}
 </script>
 
 <style></style>

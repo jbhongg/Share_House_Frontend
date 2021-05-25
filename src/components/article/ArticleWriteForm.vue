@@ -1,5 +1,5 @@
 <template>
-<div>
+<div align="center">
     <div class="col-lg-6" align="right">
 	    <strong>{{member.data.name}}</strong>님 환영합니다.
 	</div>

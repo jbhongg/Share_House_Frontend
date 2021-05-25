@@ -22,7 +22,7 @@ export default {
                 { label: "No.", key: "no" },
                 { label: "floor.", key: "floor" },
                 { label: "houseName", key: "houseName" },
-             ],
+            ],
         }
     },
         computed: {

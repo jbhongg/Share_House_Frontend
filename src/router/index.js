@@ -13,6 +13,8 @@ import MyInfoUpdate from '@/views/MyInfoUpdate.vue';
 import Apt from '@/views/Apt.vue';
 import InterestApt from '@/views/InterestApt.vue';
 import AptInfo from '@/views/AptInfo.vue';
+import Chat from '@/views/Chat.vue';
+import Messege from '@/views/Messege.vue';
 
 Vue.use(VueRouter);
 
@@ -83,9 +85,19 @@ const routes = [
     component: Apt,
   },
   {
-    path: '/AptInfo',
+    path: '/aptinfo',
     name: 'AptInfo',
     component: AptInfo,
+  },
+  {
+    path: '/chat',
+    name: 'Chat',
+    component: Chat,
+  },
+  {
+    path: '/messege/enter:name:id',
+    name: 'Messege',
+    component: Messege,
   },
 ];
 

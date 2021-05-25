@@ -57,24 +57,10 @@ export default {
 			si: "",
 			gu: "",
 			dong_code: "",
-			pos: [
-				{
-					name : '제주특별자치도 제주시 첨단로 241'
-				},
-				{
-					name : '제주특별자치도 제주시 첨단로 242'
-				},
-				{
-					name : '제주특별자치도 제주시 첨단로 245-2'	
-				},
-				{
-					name : '제주특별자치도 제주시 첨단로 245-13'
-				}
-			]
 		}
 	},
 	computed:{
-		...mapState(["sido", "gugun", "dong"]),
+		...mapState(["sido", "gugun", "dong", "popular"]),
 	},
 	mounted() {
 		window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
@@ -98,6 +84,7 @@ export default {
 		...mapActions(["getGugunList"]),
 		...mapActions(["getDongList"]),
 		...mapActions(["getAptList"]),
+		...mapActions(["getPopular"]),
 		addScript() {
       		const script = document.createElement('script');
       		script.onload = () => window.kakao.maps.load(this.initMap);
@@ -108,14 +95,15 @@ export default {
       		var container = document.getElementById('map'); 
       		var options = {
         		center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-        		level: 3 
+        		level: 9
       		};
 
       		var map = new window.kakao.maps.Map(container, options);
 			var geocoder = new window.kakao.maps.services.Geocoder();
 
-			for (var i = 0; i < this.pos.length; i++) {
-				geocoder.addressSearch(this.pos[i].name, function(result, status) {
+			for (var i = 0; i < this.popular.length; i++) {
+				let title = this.popular[i].houseName;
+				geocoder.addressSearch(this.popular[i].address, function(result, status) {
      			if (status === window.kakao.maps.services.Status.OK) {
 
         			var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
@@ -124,7 +112,7 @@ export default {
             			position: coords
         			});
         			var infowindow = new window.kakao.maps.InfoWindow({
-            			content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+            			content: `<div style="width:150px;text-align:center;padding:6px 0;">${title}</div>`
         			});
         			infowindow.open(map, marker);
         			map.setCenter(coords);
@@ -134,6 +122,7 @@ export default {
     	},
 		getdata(){
 			this.getSidoList();
+			this.hotapt();
 		},
 		getgugundata(code){
 			this.getGugunList(code);
@@ -144,6 +133,9 @@ export default {
 		getapt(code){
 			this.getAptList(code);
 			this.$router.push({name: 'Apt'});
+		},
+		hotapt(){
+			this.getPopular();
 		}
 	}
 }

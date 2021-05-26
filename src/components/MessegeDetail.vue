@@ -15,14 +15,18 @@
       </div>
     </div>
     <hr />
-    <input
-      type="text"
-      v-on:keyup.enter="sendMessage()"
-      v-model="content"
-      placeholder="보낼 메세지"
-      size="100"
-    />
-    <button @click="sendMessage()">SEND</button>
+    <div class="row mt-5" style="justify-content: center">
+      <div class="col-6">
+        <b-form-input
+          type="text"
+          v-on:keyup.enter="sendMessage()"
+          v-model="content"
+          placeholder="보낼 메세지"
+          size="100"
+        />
+      </div>
+      <b-button variant="primary" class="col-1" @click="sendMessage()">SEND</b-button>
+    </div>
   </div>
 </template>
 
@@ -106,18 +110,17 @@ export default {
         this.content = "";
       }
     },
-    getdata(no){
+    getdata(no) {
       this.getMsg(no);
     },
     getChat() {
       //this.getMsg(no);
       this.message = [];
-      if(this.msg.length == 0){
+      if (this.msg.length == 0) {
         this.message = [];
-      }
-      else {
+      } else {
         console.log(this.msg);
-        for (let i = this.msg.length-1; i >-1 ; i--) {
+        for (let i = this.msg.length - 1; i > -1; i--) {
           let m = {
             senderName: this.msg[i].senderId,
             content: this.msg[i].content,
@@ -156,5 +159,9 @@ export default {
   border-radius: 5px;
   border: 1px solid #000000;
   width: 30%;
+}
+
+.input-form {
+  align-items: flex-start;
 }
 </style>

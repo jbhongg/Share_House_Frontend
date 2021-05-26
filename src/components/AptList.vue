@@ -14,35 +14,60 @@
           <h2 class="title">주택 정보</h2>
           <hr />
           <div class="separator-3"></div>
-          <table border="1" v-if="typeof apts != 'undefined'">
-            <div class="media margin-clear">
-              <div class="media-body">
-                <th>No.</th>
-                <th>주택 명(상세보기)</th>
-                <th>지역</th>
-                <th>추천 거주 인원</th>
-                <th>현재 찜한 인원</th>
-                <th>예상 전/월세</th>
-                <th>찜하기</th>
-                <th>채팅방</th>
-                <tr v-for="(item, i) in apts" :key="i">
-                  <td>{{ item.no }}</td>
-                  <td>
-                    <button @click="detailinfo(item.houseName)">{{ item.houseName }}</button>
-                  </td>
-                  <td>{{ item.dong }}</td>
-                  <td>{{ item.residentsNum }}</td>
-                  <td>1</td>
-                  <td v-if="item.monthlyRent == 0">{{ item.deposit }}(전)</td>
-                  <td v-else>{{ item.monthlyRent }}(월)</td>
-                  <td>
+          <div class="media margin-clear">
+            <div class="media-body">
+              <table class="table table-hover" border="1" v-if="typeof apts != 'undefined'">
+                <thead>
+                  <th>No.</th>
+                  <th>주택 명(상세보기)</th>
+                  <th>지역</th>
+                  <th>추천 거주 인원</th>
+                  <th>현재 찜한 인원</th>
+                  <th>예상 전/월세</th>
+                  <th>찜하기</th>
+                  <th>채팅방 입장</th>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, i) in apts" :key="i">
+                    <td>{{ item.no }}</td>
+                    <td>
+                      <b-button variant="link" @click="detailinfo(item.houseName)">{{
+                        item.houseName
+                      }}</b-button>
+                    </td>
+                    <td>{{ item.dong }}</td>
+                    <td>{{ item.residentsNum }}</td>
+                    <td>1</td>
+                    <td v-if="item.monthlyRent == 0">{{ item.deposit }}(전)</td>
+                    <td v-else>{{ item.monthlyRent }}(월)</td>
+                    <td>
+                      <img
+                        id="logo-img-mobile"
+                        src="@/assets/heart.png"
+                        width="30"
+                        alt="The SSAFY"
+                        style="cursor: pointer"
+                        @click="registinterestapt(item.no, member.data.id)"
+                      />
+                      <!--
                     <button @click="registinterestapt(item.no, member.data.id)">찜하기</button>
-                  </td>
-                  <td><button @click="enterchat(item.no)">채팅방 입장하기</button></td>
-                </tr>
-              </div>
+                    --></td>
+                    <td>
+                      <img
+                        id="logo-img-mobile"
+                        src="@/assets/enter.png"
+                        width="30"
+                        alt="The SSAFY"
+                        style="cursor: pointer"
+                        @click="enterchat(item.no)"
+                      />
+                      <!--<button @click="enterchat(item.no)">채팅방 입장</button></td>-->
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </table>
+          </div>
           <div class="media margin-clear">
             <div class="media-body">
               <h3 v-if="typeof apts == 'undefined'">주택 정보가 없습니다</h3>

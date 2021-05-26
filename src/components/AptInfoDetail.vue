@@ -24,6 +24,7 @@ export default {
                 { label: "이름.", key: "houseName" },
                 { label: "주소", key: "address" },
                 { label: "면적", key: "area" },
+                { label: "추천 거주 인원", key: "residentsNum" },
                 { label: "층", key: "floor" },
                 { label: "설립년도", key: "buildYear" },
                 { label: "전세", key: "deposit" },

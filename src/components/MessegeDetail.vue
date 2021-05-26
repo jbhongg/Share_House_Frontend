@@ -7,10 +7,19 @@
     <div class="row mt-5" style="justify-content: center">
       <div class="col-7" style="background: skyblue" v-for="(m, idx) in message" :key="idx">
         <div v-bind:class="m.style">
-          <h5 v-if="m.style === 'otherMsg'" style="margin: 3px">
+          <div v-if="m.style === 'otherMsg'">
+            <h5  style="margin: 3px">
             {{ m.senderName }}
-          </h5>
-          {{ m.content }}
+            </h5>
+            {{ m.content }}
+          </div>
+          <div v-else-if="m.style === 'myMsg'">
+            {{ m.content }}
+          </div>
+        <div v-else>
+            채팅방이 개설되었습니다.
+          </div>
+
         </div>
       </div>
     </div>
@@ -58,7 +67,17 @@ export default {
     this.roomid = this.$route.params.id;
     this.nickname = this.member.data.id;
     console.log(this.roomid);
-    http
+    if(this.msg == '1'){
+      let m = {
+            senderName: "admin",
+            content: this.msg,
+            style: "none",
+      };
+      this.message.push(m);
+      console.log("ww");
+    }
+    else{
+          http
       .get("/chat/room/message/" + this.roomid)
       .then((response) => {
         console.log("get");
@@ -69,6 +88,8 @@ export default {
       .catch((error) => {
         console.log(error);
       });
+    }
+
     // this.getdata(this.roomid);
     // this.getChat();
     // this.getdata(this.roomid);

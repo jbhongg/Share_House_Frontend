@@ -118,7 +118,9 @@ export default new Vuex.Store({
     },
     SET_CHAT(state) {
       //state.roomInfo = room.data;
-      state.msg.push("");
+      state.msg = [];
+      state.msg.push('1');
+      console.log(state.msg);
     },
     SET_POPULAR(state, popular) {
       state.popular = popular;

@@ -1,13 +1,13 @@
 <template>
     <div class="row mt-5">
-        <div class="col-7">
+        <div class="col-6">
             <img id="logo-img-mobile" src="@/assets/house.jpg"  alt="The house" style="width: 60%; height: 400px; overflow: hidden;" />
         </div>
-        <b-container class="col-4">
+        <div class="col-4">
         <h2 class="title">주택 정보</h2>
         <b-table stacked id="aptdetail_table" :items="apt" :fields="fields" >
 	  </b-table>
-        </b-container>
+        </div>
     </div>
 </template>
 

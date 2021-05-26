@@ -1,6 +1,6 @@
 <template>
   <div class="row mt-5">
-    <div class="col-6">
+    <div class="col-5" >
       <div
         id="map"
         class="map"
@@ -8,7 +8,7 @@
         style="width: 70%; height: 600px; margin: auto; position: relative; overflow: hidden"
       ></div>
     </div>
-    <div class="col-6">
+    <div class="col-6" v-if="typeof apts != 'undefined'">
       <div class="sidebar">
         <div class="block clearfix" id="houseInfo">
           <h2 class="title">주택 정보</h2>
@@ -68,14 +68,14 @@
               </table>
             </div>
           </div>
-          <div class="media margin-clear">
-            <div class="media-body">
-              <h3 v-if="typeof apts == 'undefined'">주택 정보가 없습니다</h3>
-            </div>
-          </div>
         </div>
       </div>
     </div>
+    <div v-else class="media margin-clear">
+            <div class="media-body">
+              <h3 >주택 정보가 없습니다</h3>
+            </div>
+          </div>
   </div>
 </template>
 

@@ -57,14 +57,18 @@ export default {
     http
       .get("/chat/room/message/" + this.roomid)
       .then((response) => {
-        console.log("getMsg");
+        console.log("get");
         console.log(response);
         this.message = response.data;
+        this.getChat();
       })
       .catch((error) => {
         console.log(error);
       });
-    this.getChat(this.roomid);
+    // this.getdata(this.roomid);
+    // this.getChat();
+    // this.getdata(this.roomid);
+    //this.getChat();
     let socket = new SockJS("http://localhost:8092/ws");
     this.stompClient = Stomp.over(socket);
     this.stompClient.connect(
@@ -102,20 +106,25 @@ export default {
         this.content = "";
       }
     },
-    getChat(no) {
+    getdata(no){
       this.getMsg(no);
+    },
+    getChat() {
+      //this.getMsg(no);
       this.message = [];
-      console.log(this.msg);
-      if (this.msg.data) {
-        for (let i = this.msg.data.length - 1; i > -1; i--) {
+      if(this.msg.length == 0){
+        this.message = [];
+      }
+      else {
+        console.log(this.msg);
+        for (let i = this.msg.length-1; i >-1 ; i--) {
           let m = {
-            senderName: this.msg.data[i].senderId,
-            content: this.msg.data[i].content,
-            style: this.msg.data[i].senderId == this.id ? "myMsg" : "otherMsg",
+            senderName: this.msg[i].senderId,
+            content: this.msg[i].content,
+            style: this.msg[i].senderId == this.id ? "myMsg" : "otherMsg",
           };
           this.message.push(m);
         }
-        console.log(this.message);
       }
     },
   },

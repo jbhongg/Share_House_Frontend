@@ -6,12 +6,7 @@
         <template #cell(enter)="roomName">
           <b-button
             size="sm"
-            @click="
-              $router.push({
-                name: 'Messege',
-                params: { name: roomName.item.roomName, id: roomName.item.roomId },
-              })
-            "
+            @click="getdata(roomName.item.roomName, roomName.item.roomId)"
             class="mr-2"
             >입장
           </b-button>
@@ -42,11 +37,16 @@ export default {
     this.findAllRoom();
   },
   methods: {
+      ...mapActions(["getMsg"]),
     ...mapActions(["getRoomsById"]),
     findAllRoom() {
       //this.getRooms();
       this.getRoomsById(this.member.data.id);
     },
+    getdata(Name, id){
+        this.getMsg(id);
+        this.$router.push({name: 'Messege',params: { name: Name, id: id },});
+    }
   },
 };
 </script>

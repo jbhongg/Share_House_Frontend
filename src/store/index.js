@@ -116,8 +116,9 @@ export default new Vuex.Store({
         state.roomInfo = room.data;
       }
     },
-    SET_CHAT(state, room) {
-      state.roomInfo = room.data;
+    SET_CHAT(state) {
+      //state.roomInfo = room.data;
+      state.msg.push("");
     },
     SET_POPULAR(state, popular) {
       state.popular = popular;
@@ -147,16 +148,17 @@ export default new Vuex.Store({
           console.dir(error);
         });
     },
-    registRoom({ commit }, name) {
-      axios
-        .post("http://localhost:8092/chat/room/" + name)
-        .then((response) => {
-          alert(response.data.roomName + "번 방 개설에 성공하였습니다.");
-          commit("SET_CHAT", response);
-        })
-        .catch((error) => {
-          console.dir(error);
-        });
+    registRoom({ commit }) {
+      commit("SET_CHAT");
+      // axios
+      //   .post("http://localhost:8092/chat/room/" + name)
+      //   .then((response) => {
+      //     alert(response.data.roomName + "번 방 개설에 성공하였습니다.");
+      //     commit("SET_CHAT", response);
+      //   })
+      //   .catch((error) => {
+      //     console.dir(error);
+      //   });
     },
     loginMember({ commit }, member) {
       axios
@@ -278,6 +280,7 @@ export default new Vuex.Store({
       axios
         .get("http://localhost:8092/chat/rooms/" + userid)
         .then((response) => {
+          console.log(response);
           commit("SET_ROOMS", response);
         })
         .catch((error) => {
@@ -308,9 +311,7 @@ export default new Vuex.Store({
       axios
         .get("http://localhost:8092/chat/room/message/" + no)
         .then((response) => {
-          console.log("getMsg");
-          console.log(response);
-          commit("SET_MSG", response);
+          commit("SET_MSG", response.data);
         })
         .catch((error) => {
           console.log(error);

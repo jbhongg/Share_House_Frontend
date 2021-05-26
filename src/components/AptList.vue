@@ -140,6 +140,7 @@ export default {
         .post("/chat/room/" + no + "/" + this.member.data.id)
         .then((response) => {
           alert(response.data.roomName + "번 방에 입장합니다.");
+          this.createRoom();
           this.$router.push({
             name: "Messege",
             params: { name: response.data.roomName, id: response.data.roomId },

@@ -4,7 +4,7 @@
 	    <strong>{{member.data.name}}</strong>님 환영합니다.
 	</div>
 	<div class="col-lg-6" align="center">
-		<h2>방명록 글쓰기</h2>
+		<h2>게시판 글쓰기</h2>
 		<div id="writeform">
 			<div class="form-group" align="left">
 				<label for="subject">제목:</label>

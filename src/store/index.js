@@ -26,6 +26,8 @@ export default new Vuex.Store({
     roomInfo: Object,
     popular: [],
     msg: [],
+    wishnum: 0,
+    roomnum: 0,
   },
   getters: {
     requestParams(state) {
@@ -109,8 +111,10 @@ export default new Vuex.Store({
       state.rooms = rooms;
     },
     SET_ROOM(state, room) {
-      if (room.data + 1 == "1") {
+      console.log(room);
+      if (room.data == "FAIL") {
         state.room = "1";
+        console.log(state.room);
       } else {
         state.room = "2";
         state.roomInfo = room.data;
@@ -128,11 +132,20 @@ export default new Vuex.Store({
     SET_MSG(state, msg) {
       state.msg = msg;
     },
+    SET_WISHNUM(state, wishnum) {
+      state.wishnum = wishnum;
+    },
+    SET_ROOMNUM(state, roomnum) {
+      state.roomnum = roomnum;
+    },
+    DELETE_ROOM(state) {
+      console.log(state.roomInfo);
+    }
   },
   actions: {
     joinMember({ commit }, member) {
       axios
-        .post("http://localhost:8092/user/join", member)
+        .post("http://59.27.106.177:8092/user/join", member)
         .then((response) => {
           commit("JOIN_MEMBER", response);
         })
@@ -142,7 +155,7 @@ export default new Vuex.Store({
     },
     registInterest({ commit }, param) {
       axios
-        .post("http://localhost:8092/wish/" + param)
+        .post("http://59.27.106.177:8092/wish/" + param)
         .then((response) => {
           commit("SET_WISH", response);
         })
@@ -152,19 +165,10 @@ export default new Vuex.Store({
     },
     registRoom({ commit }) {
       commit("SET_CHAT");
-      // axios
-      //   .post("http://localhost:8092/chat/room/" + name)
-      //   .then((response) => {
-      //     alert(response.data.roomName + "번 방 개설에 성공하였습니다.");
-      //     commit("SET_CHAT", response);
-      //   })
-      //   .catch((error) => {
-      //     console.dir(error);
-      //   });
     },
     loginMember({ commit }, member) {
       axios
-        .post("http://localhost:8092/user/login", member)
+        .post("http://59.27.106.177:8092/user/login", member)
         .then((response) => {
           commit("LOGIN_MEMBER", response);
         })
@@ -176,7 +180,7 @@ export default new Vuex.Store({
       commit("SET_KEY", params.key);
       commit("SET_WORD", params.word);
       axios
-        .get("http://localhost:8092/board", { params })
+        .get("http://59.27.106.177:8092/board", { params })
         .then((response) => {
           commit("SET_BOARDS", response.data.list);
           commit("SET_BOARDPAGENAV", response.data.navigation);
@@ -187,7 +191,7 @@ export default new Vuex.Store({
     },
     getWishList({ commit }, userid) {
       axios
-        .get("http://localhost:8092/wish/" + userid)
+        .get("http://59.27.106.177:8092/wish/" + userid)
         .then((response) => {
           commit("SET_WISHS", response);
         })
@@ -197,7 +201,7 @@ export default new Vuex.Store({
     },
     deleteWishList({ commit }, param) {
       axios
-        .delete("http://localhost:8092/wish/" + param)
+        .delete("http://59.27.106.177:8092/wish/" + param)
         .then((response) => {
           commit("DELETE_WISH", response);
         })
@@ -207,7 +211,7 @@ export default new Vuex.Store({
     },
     getSidoList({ commit }) {
       axios
-        .get("http://localhost:8092/house/area")
+        .get("http://59.27.106.177:8092/house/area")
         .then((response) => {
           commit("SET_SIDO", response);
         })
@@ -217,7 +221,7 @@ export default new Vuex.Store({
     },
     getGugunList({ commit }, code) {
       axios
-        .get("http://localhost:8092/house/sido/" + code)
+        .get("http://59.27.106.177:8092/house/sido/" + code)
         .then((response) => {
           commit("SET_GUGUN", response);
         })
@@ -227,7 +231,7 @@ export default new Vuex.Store({
     },
     getDongList({ commit }, code) {
       axios
-        .get("http://localhost:8092/house/gugun/" + code)
+        .get("http://59.27.106.177:8092/house/gugun/" + code)
         .then((response) => {
           commit("SET_DONG", response);
         })
@@ -237,7 +241,7 @@ export default new Vuex.Store({
     },
     getAptList({ commit }, code) {
       axios
-        .get("http://localhost:8092/house/dong/" + code)
+        .get("http://59.27.106.177:8092/house/dong/" + code)
         .then((response) => {
           commit("SET_APTS", response.data.list);
           commit("SET_DONGNUM", code);
@@ -246,10 +250,32 @@ export default new Vuex.Store({
           console.log(error);
         });
     },
+    getWishNum({ commit }, no) {
+      axios
+        .get("http://59.27.106.177:8092/house/" + no + "/wish")
+        .then((response) => {
+          console.log(response.data);
+          commit("SET_WISHNUM", response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getRoomNum({ commit }, no) {
+      axios
+        .get("http://59.27.106.177:8092/house/" + no + "/room")
+        .then((response) => {
+          console.log(response.data);
+          commit("SET_ROOMNUM", response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     getAptListByGu({ commit }, code) {
       console.log(code);
       axios
-        .get("http://localhost:8092/house/interest/" + code)
+        .get("http://59.27.106.177:8092/house/interest/" + code)
         .then((response) => {
           commit("SET_APTS", response.data.list);
         })
@@ -260,8 +286,9 @@ export default new Vuex.Store({
     getAptDetail(context, name) {
       let dong = context.state.dongnum;
       axios
-        .get("http://localhost:8092/house/search/" + name, { params: { dong } })
+        .get("http://59.27.106.177:8092/house/search/" + name, { params: { dong } })
         .then((response) => {
+          console.log(response);
           context.commit("SET_APT", response.data.list);
         })
         .catch((error) => {
@@ -270,7 +297,7 @@ export default new Vuex.Store({
     },
     getRooms({ commit }) {
       axios
-        .get("http://localhost:8092/chat/rooms")
+        .get("http://59.27.106.177:8092/chat/rooms")
         .then((response) => {
           commit("SET_ROOMS", response);
         })
@@ -280,7 +307,7 @@ export default new Vuex.Store({
     },
     getRoomsById({ commit }, userid) {
       axios
-        .get("http://localhost:8092/chat/rooms/" + userid)
+        .get("http://59.27.106.177:8092/chat/rooms/" + userid)
         .then((response) => {
           console.log(response);
           commit("SET_ROOMS", response);
@@ -291,8 +318,9 @@ export default new Vuex.Store({
     },
     getRoom({ commit }, no) {
       axios
-        .get("http://localhost:8092/chat/room/" + no)
+        .get("http://59.27.106.177:8092/chat/room/" + no)
         .then((response) => {
+          console.log(response);
           commit("SET_ROOM", response);
         })
         .catch((error) => {
@@ -301,7 +329,7 @@ export default new Vuex.Store({
     },
     getPopular({ commit }) {
       axios
-        .get("http://localhost:8092/house/popular")
+        .get("http://59.27.106.177:8092/house/popular")
         .then((response) => {
           commit("SET_POPULAR", response.data);
         })
@@ -311,7 +339,7 @@ export default new Vuex.Store({
     },
     getMsg({ commit }, no) {
       axios
-        .get("http://localhost:8092/chat/room/message/" + no)
+        .get("http://59.27.106.177:8092/chat/room/message/" + no)
         .then((response) => {
           commit("SET_MSG", response.data);
         })
@@ -324,7 +352,7 @@ export default new Vuex.Store({
     },
     writeArticle({ commit }, article) {
       axios
-        .post("http://localhost:8092/board", article)
+        .post("http://59.27.106.177:8092/board", article)
         .then((response) => {
           commit("WRITE_ARTICLE", response);
         })
@@ -334,7 +362,7 @@ export default new Vuex.Store({
     },
     deleteArticle({ commit }, articleno) {
       axios
-        .delete("http://localhost:8092/board/" + articleno.articleno)
+        .delete("http://59.27.106.177:8092/board/" + articleno.articleno)
         .then((response) => {
           commit("DELETE_ARTICLE", response);
         })
@@ -344,7 +372,7 @@ export default new Vuex.Store({
     },
     updateArticle({ commit }, article) {
       axios
-        .put("http://localhost:8092/board/" + article.articleno, article)
+        .put("http://59.27.106.177:8092/board/" + article.articleno, article)
         .then((response) => {
           commit("UPDATE_ARTICLE", response);
         })
@@ -354,7 +382,7 @@ export default new Vuex.Store({
     },
     deleteUser({ commit }, userid) {
       axios
-        .delete("http://localhost:8092/user/" + userid)
+        .delete("http://59.27.106.177:8092/user/" + userid)
         .then((response) => {
           commit("DELETE_USER", response);
         })
@@ -364,9 +392,19 @@ export default new Vuex.Store({
     },
     updateMember({ commit }, member) {
       axios
-        .put("http://localhost:8092/user/" + member.id, member)
+        .put("http://59.27.106.177:8092/user/" + member.id, member)
         .then((response) => {
           commit("UPDATE_MEMBER", response);
+        })
+        .catch((error) => {
+          console.dir(error);
+        });
+    },
+    deleteRoom({ commit }, param) {
+      axios
+        .delete("http://59.27.106.177:8092/chat/" + param)
+        .then((response) => {
+          commit("DELETE_ROOM", response);
         })
         .catch((error) => {
           console.dir(error);

@@ -105,10 +105,12 @@ export default {
       console.log(this.article);
       this.updateArticle(this.article);
       this.$router.push({ name: "Article" });
+      this.$router.go();
     },
     deleteBoard() {
       this.deleteArticle(this.article);
       this.$router.push({ name: "Article" });
+      this.$router.go();
     },
   },
 };

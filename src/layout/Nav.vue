@@ -69,6 +69,7 @@ export default {
     ...mapActions(["logoutMember"]),
     logout() {
       this.logoutMember();
+      this.$router.push({name: 'Main'});
     },
   },
 };

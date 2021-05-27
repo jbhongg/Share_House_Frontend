@@ -21,7 +21,6 @@
                   <th scope="col">주택 명</th>
                   <th scope="col">지역</th>
                   <th scope="col">추천 거주 인원</th>
-                  <th scope="col">현재 찜한 인원</th>
                   <th scope="col">예상 전/월세</th>
                   <th scope="col">찜하기</th>
                 </thead>
@@ -31,7 +30,6 @@
                     <td>{{ item.houseName }}</td>
                     <td>{{ item.dong }}</td>
                     <td>{{ item.residentsNum }}</td>
-                    <td>1</td>
                     <td v-if="item.monthlyRent == 0">{{ item.deposit }}(전)</td>
                     <td v-else>{{ item.monthlyRent }}(월)</td>
                     <td>

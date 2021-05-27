@@ -204,6 +204,7 @@ export default {
     modifyinfo() {
         this.updateMember(this.user);
 	    this.$router.push({name: 'MyPage'});
+      this.$router.go();
     },
     searchaddr() {
       new window.daum.Postcode({ 

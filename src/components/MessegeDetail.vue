@@ -36,6 +36,10 @@
       </div>
       <b-button variant="primary" class="col-1" @click="sendMessage()">SEND</b-button>
     </div>
+    <div>
+      <b-button variant="primary" class="btn btn-primary" @click="goback()">목록</b-button>
+      <b-button variant="primary" class="btn btn-warning" @click="exit(id, roomid)">퇴장</b-button>
+    </div>
   </div>
 </template>
 
@@ -94,7 +98,7 @@ export default {
     // this.getChat();
     // this.getdata(this.roomid);
     //this.getChat();
-    let socket = new SockJS("http://localhost:8092/ws");
+    let socket = new SockJS("http://59.27.106.177:8092/ws");
     this.stompClient = Stomp.over(socket);
     this.stompClient.connect(
       {},
@@ -117,6 +121,7 @@ export default {
   },
   methods: {
     ...mapActions(["getMsg"]),
+    ...mapActions(["deleteRoom"]),
     sendMessage() {
       if (this.content.trim() != "" && this.stompClient != null) {
         let chatMessage = {
@@ -151,6 +156,16 @@ export default {
         }
       }
     },
+    goback(){
+      this.$router.push({name: 'Chat'});
+    },
+    exit(id, no){
+      let param = no + "/" + id;
+      console.log(param);
+      this.deleteRoom(param);
+      this.$router.push({name: 'Chat'});
+      this.$router.go();
+    }
   },
 };
 </script>

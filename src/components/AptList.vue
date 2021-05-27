@@ -22,22 +22,19 @@
                   <th>주택 명(상세보기)</th>
                   <th>지역</th>
                   <th>추천 거주 인원</th>
-                  <th>현재 찜한 인원</th>
                   <th>예상 전/월세</th>
                   <th>찜하기</th>
-                  <th>채팅방 입장</th>
                 </thead>
                 <tbody>
                   <tr v-for="(item, i) in apts" :key="i">
                     <td>{{ item.no }}</td>
                     <td>
-                      <b-button variant="link" @click="detailinfo(item.houseName)">{{
+                      <b-button variant="link" @click="detailinfo(item.houseName, item.no)">{{
                         item.houseName
                       }}</b-button>
                     </td>
                     <td>{{ item.dong }}</td>
                     <td>{{ item.residentsNum }}</td>
-                    <td>1</td>
                     <td v-if="item.monthlyRent == 0">{{ item.deposit }}(전)</td>
                     <td v-else>{{ item.monthlyRent }}(월)</td>
                     <td>
@@ -52,17 +49,6 @@
                       <!--
                     <button @click="registinterestapt(item.no, member.data.id)">찜하기</button>
                     --></td>
-                    <td>
-                      <img
-                        id="logo-img-mobile"
-                        src="@/assets/enter.png"
-                        width="30"
-                        alt="The SSAFY"
-                        style="cursor: pointer"
-                        @click="enterchat(item.no)"
-                      />
-                      <!--<button @click="enterchat(item.no)">채팅방 입장</button></td>-->
-                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -81,7 +67,6 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import http from "@/util/http-common";
 
 export default {
   name: "AptList",
@@ -104,6 +89,8 @@ export default {
     ...mapActions(["getAptDetail"]),
     ...mapActions(["getRoom"]),
     ...mapActions(["registRoom"]),
+    ...mapActions(["getWishNum"]),
+    ...mapActions(["getRoomNum"]),
     addScript() {
       const script = document.createElement("script");
       script.onload = () => window.kakao.maps.load(this.initMap);
@@ -156,28 +143,12 @@ export default {
       let param = userid + "/" + no;
       this.registInterest(param);
     },
-    detailinfo(name) {
+    detailinfo(name, no) {
       this.getAptDetail(name);
+      this.getWishNum(no);
+      this.getRoomNum(no);
       this.$router.push({ name: "AptInfo" });
-    },
-    enterchat(no) {
-      http
-        .post("/chat/room/" + no + "/" + this.member.data.id)
-        .then((response) => {
-          alert(response.data.roomName + "번 방에 입장합니다.");
-          this.createRoom();
-          this.$router.push({
-            name: "Messege",
-            params: { name: response.data.roomName, id: response.data.roomId },
-          });
-        })
-        .catch((error) => {
-          console.dir(error);
-        });
-    },
-    createRoom(no) {
-      this.registRoom(no);
-    },
+    }
   },
 };
 </script>
